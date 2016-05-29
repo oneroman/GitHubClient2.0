@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
 import com.jakewharton.rxbinding.support.design.widget.RxTextInputLayout;
@@ -33,26 +34,30 @@ import rx.functions.Action1;
 /**
  * Created by Anna on 27.05.2016.
  */
-public class UserLoginFragment extends BaseFragment/* implements UserLogin.View */{
+public class UserLoginFragment extends BaseFragment implements UserLogin.View {
 
     private static final String TAG = UserLoginFragment.class.getSimpleName();
 
-    /*@BindView(R.id.userName)
+    @BindView(R.id.userName)
     EditText userName;
-//    @BindView(R.id.userName_layout)
-//    TextInputLayout username_layout;
+    @BindView(R.id.userName_layout)
+    TextInputLayout username_layout;
     @BindView(R.id.button_start)
     View mButtonStart;
 
 
     @Inject
-    UserLogin.Presenter mPresenter;*/
+    UserLogin.Presenter mPresenter;
 
-//    private Subscription usernameChangeSubscription;
+    private Subscription usernameChangeSubscription;
+
+    public UserLoginFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     protected void setup() {
-        //((MyApplication) getActivity().getApplication()).getRepositoriesListComponent().inject(this);
+        ((MyApplication) getActivity().getApplication()).getRepositoriesListComponent().inject(this);
     }
 
     @Override
@@ -65,16 +70,15 @@ public class UserLoginFragment extends BaseFragment/* implements UserLogin.View 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.d(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_user_login, container, false);
-        //ButterKnife.bind(this, view);
+        ButterKnife.bind(this, view);
 
-        /*if(BuildConfig.DEBUG && savedInstanceState == null) {
+        if(BuildConfig.DEBUG && savedInstanceState == null) {
             String tmpName = getResources().getString(R.string.default_debug_username);
             userName.setText(tmpName);
             userName.setSelection(tmpName.length());
-        }*/
+        }
 
-        //Logger.d(TAG, "userName.getText() = " + userName.getText());
-        /*usernameChangeSubscription = RxTextView.textChangeEvents(userName).subscribe(new Action1<TextViewTextChangeEvent>() {
+        usernameChangeSubscription = RxTextView.textChangeEvents(userName).subscribe(new Action1<TextViewTextChangeEvent>() {
             @Override
             public void call(TextViewTextChangeEvent textViewTextChangeEvent) {
                 String user = textViewTextChangeEvent.text().toString();
@@ -82,10 +86,10 @@ public class UserLoginFragment extends BaseFragment/* implements UserLogin.View 
 
                 mPresenter.setUsername(user);
                 final boolean failed = TextUtils.isEmpty(user);
-                RxTextInputLayout.error(username_layout).call(failed ? "User name could not be empty" : null);
-                RxView.enabled(mButtonStart).call(!failed);
+                RxTextInputLayout.error(username_layout).call(failed ? getResources().getString(R.string.username_empty_error) : null);
+//                RxView.enabled(mButtonStart).call(!failed);
             }
-        });*/
+        });
 
         return view;
     }
@@ -93,14 +97,25 @@ public class UserLoginFragment extends BaseFragment/* implements UserLogin.View 
     @OnClick(R.id.button_start)
     public void onStartClick() {
         Logger.d(TAG, "onStartClick");
-        //ActivityUtils.replaceFragment(getActivity().getSupportFragmentManager(), RepositoriesListFragment.newInstance(mPresenter.getUsername()), R.id.fragment_container, "RepositoriesListFragment" );
+        boolean success = true;
+        //need to proceed every input data and animate them if they are wrong one by one
+        String name = mPresenter.getUsername();
+        if(TextUtils.isEmpty(name)) {
+            username_layout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake_error));
+            success = false;
+        }
+
+        //if we validate all data then let's proceed next step
+        if (success) {
+            ActivityUtils.replaceFragment(getActivity().getSupportFragmentManager(), RepositoriesListFragment.newInstance(mPresenter.getUsername()), R.id.fragment_container, "RepositoriesListFragment");
+        }
     }
 
     @Override
     public void onDestroyView() {
         Logger.d(TAG, "onDestroyView");
         super.onDestroyView();
-        //usernameChangeSubscription.unsubscribe();
+        usernameChangeSubscription.unsubscribe();
     }
 
     @Override

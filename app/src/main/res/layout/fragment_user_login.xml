@@ -4,8 +4,10 @@
     android:layout_height="match_parent"
     tools:context=".LaunchActivity">
 
-
-
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/userName_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
         <EditText
             android:hint="@string/enter_username_hint"
@@ -14,7 +16,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/userName"
             android:lines="1" />
-
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:layout_width="wrap_content"
