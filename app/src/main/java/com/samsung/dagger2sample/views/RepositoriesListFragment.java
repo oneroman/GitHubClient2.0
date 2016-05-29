@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.samsung.dagger2sample.GitHubAPI.pojo.Repository;
+import com.samsung.dagger2sample.GitHubAPI.pojo.Userinfo;
 import com.samsung.dagger2sample.adapters.RepositoryAdapter;
 import com.samsung.dagger2sample.base.BaseFragment;
 import com.samsung.dagger2sample.GitHubAPI.GitHubAPI;
@@ -34,9 +35,9 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
 
     private static final String TAG = RepositoriesListFragment.class.getSimpleName();
 
-    private static final String USERNAME = "username";
+    private static final String USERINFO = "userinfo";
 
-    private String mUsername;
+    private Userinfo mUserinfo;
 
     @BindView(R.id.list)
     RecyclerView recyclerView;
@@ -61,10 +62,10 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         mPresenter.init(mGitHubApi, mExecutor);
     }
 
-    public static RepositoriesListFragment newInstance(String username) {
+    public static RepositoriesListFragment newInstance(Userinfo userinfo) {
         RepositoriesListFragment fragment = new RepositoriesListFragment();
         Bundle args = new Bundle();
-        args.putString(USERNAME, username);
+        args.putParcelable(USERINFO, userinfo);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,9 +74,9 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mUsername = getArguments().getString(USERNAME);
+            mUserinfo = getArguments().getParcelable(USERINFO);
         }
-        Logger.d(TAG, "onCreate, username [" + mUsername + "]");
+        Logger.d(TAG, "onCreate, username [" + mUserinfo + "]");
     }
 
     @Override
@@ -97,7 +98,7 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         Logger.d(TAG, "onCreateView");
         super.onViewCreated(view, savedInstanceState);
 
-        mPresenter.getRepositories(mUsername);
+        mPresenter.getRepositories(mUserinfo.login);
     }
 
     @Override

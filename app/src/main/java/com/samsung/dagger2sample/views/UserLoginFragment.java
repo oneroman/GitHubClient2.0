@@ -151,7 +151,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
         if(userinfo == null) {
             showWrongUserInfo();
         } else {
-            ActivityUtils.replaceFragment(getActivity().getSupportFragmentManager(), RepositoriesListFragment.newInstance(mPresenter.getUsername()), R.id.fragment_container, "RepositoriesListFragment");
+            ActivityUtils.replaceFragment(getActivity().getSupportFragmentManager(), RepositoriesListFragment.newInstance(userinfo), R.id.fragment_container, "RepositoriesListFragment");
         }
     }
 
