@@ -1,6 +1,7 @@
 package com.samsung.dagger2sample.GitHubAPI;
 
 import com.samsung.dagger2sample.GitHubAPI.pojo.Repository;
+import com.samsung.dagger2sample.GitHubAPI.pojo.Userinfo;
 
 import java.util.List;
 
@@ -17,4 +18,7 @@ public interface GitHubAPI {
     @GET("users/{user}/repos")
     Observable<List<Repository>> listRepositories(@Path("user") String user);
 //    Call<List<Repository>> listRepositories(@Path("user") String user);
+
+    @GET("users/{user}")
+    Observable<Userinfo> userInfo(@Path("user") String user);
 }

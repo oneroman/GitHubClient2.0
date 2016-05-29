@@ -49,7 +49,6 @@ public class RepositoriesListPresenter implements RepositoriesList.Presenter {
             @Override
             public void onCompleted() {
                 Logger.d(TAG, "onCompleted");
-                mView.showLoading(false);
             }
 
             @Override
