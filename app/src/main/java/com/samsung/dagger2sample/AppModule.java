@@ -1,5 +1,7 @@
 package com.samsung.dagger2sample;
 
+import android.app.Application;
+
 import com.samsung.dagger2sample.GitHubAPI.GitHubAPI;
 import com.samsung.dagger2sample.presenters.RepositoriesList;
 import com.samsung.dagger2sample.presenters.RepositoriesListPresenter;
@@ -12,6 +14,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
@@ -25,6 +28,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Singleton
 @Module
 public class AppModule {
+
+    private Application app;
+
+    public AppModule(Application app) {
+        this.app = app;
+    }
 
     @Provides
     @Singleton
@@ -53,6 +62,9 @@ public class AppModule {
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(logging);
         }
+
+        Cache cache = new Cache(app.getCacheDir(), 2 * 1024 * 1024);//2 Mb
+        builder.cache(cache);
 
         builder.connectTimeout(5, TimeUnit.SECONDS).readTimeout(5, TimeUnit.SECONDS);
 

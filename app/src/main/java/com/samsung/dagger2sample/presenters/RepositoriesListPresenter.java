@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 import rx.Observer;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Anna on 27.05.2016.
@@ -22,6 +23,8 @@ public class RepositoriesListPresenter implements RepositoriesList.Presenter {
     GitHubAPI mGitHubApi;
 
     ExecutorService mExecutor;
+
+    private CompositeSubscription subscriptions = new CompositeSubscription();
 
     RepositoriesManager mRepositoriesManager;
 
@@ -38,17 +41,19 @@ public class RepositoriesListPresenter implements RepositoriesList.Presenter {
     public void init(GitHubAPI gitHubApi, ExecutorService executor) {
         mGitHubApi = gitHubApi;
         mExecutor = executor;
+        mRepositoriesManager = new RepositoriesManager(mGitHubApi);
     }
 
     @Override
     public void getRepositories(String username) {
         Logger.d(TAG, "starts getRepositories for user [" + username + "]");
         mView.showLoading(true);
-        mRepositoriesManager = new RepositoriesManager(username, mGitHubApi);
-        mRepositoriesManager.getUsersRepositories().subscribe(new Observer<List<Repository>>() {
+
+        subscriptions.add(mRepositoriesManager.getUsersRepositories(username).subscribe(new Observer<List<Repository>>() {
             @Override
             public void onCompleted() {
                 Logger.d(TAG, "onCompleted");
+                mView.showLoading(false);
             }
 
             @Override
@@ -60,11 +65,15 @@ public class RepositoriesListPresenter implements RepositoriesList.Presenter {
             @Override
             public void onNext(List<Repository> repositories) {
                 Logger.d(TAG, "onNext, repositories [" + repositories + "]");
-
-                mView.showLoading(false);
                 mView.showRepositories(repositories);
             }
-        });
+        }));
         Logger.d(TAG, "ends getRepositories");
     }
+
+    public void destroy() {
+        Logger.d(TAG, "destroy");
+        subscriptions.clear();
+    }
+
 }

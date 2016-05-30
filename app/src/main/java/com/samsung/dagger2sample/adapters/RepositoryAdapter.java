@@ -10,6 +10,7 @@ import com.samsung.dagger2sample.GitHubAPI.pojo.Repository;
 import com.samsung.dagger2sample.R;
 import com.samsung.dagger2sample.utils.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -45,7 +46,11 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Ho
     }
 
     public void addRespositories(List<Repository> list) {
-        mData = list;
+        if(mData == null) {
+            mData = new ArrayList<>(list);
+        } else {
+            mData.addAll(list);
+        }
         notifyDataSetChanged();
     }
 

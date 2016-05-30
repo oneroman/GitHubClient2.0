@@ -16,7 +16,7 @@ public class MyApplication extends Application {
         super.onCreate();
 
         mRepositoriesListComponent = DaggerAppComponent.builder().
-                appModule(new AppModule())
+                appModule(new AppModule(this))
                 .threadPoolModule(new ThreadPoolModule())
                 .build();
 

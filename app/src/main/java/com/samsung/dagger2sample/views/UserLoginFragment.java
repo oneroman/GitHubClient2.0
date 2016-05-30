@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
@@ -84,7 +85,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
             userName.setSelection(tmpName.length());
         }
 
-        subscriptions.add(RxTextView.textChangeEvents(userName).subscribe(new Action1<TextViewTextChangeEvent>() {
+        subscriptions.add(RxTextView.textChangeEvents(userName).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<TextViewTextChangeEvent>() {
             @Override
             public void call(TextViewTextChangeEvent textViewTextChangeEvent) {
                 String user = textViewTextChangeEvent.text().toString();
@@ -146,7 +147,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
         if(userinfo == null) {
             showWrongUserInfo();
         } else {
-            ActivityUtils.replaceFragment(getActivity().getSupportFragmentManager(), RepositoriesListFragment.newInstance(userinfo), R.id.fragment_container, "RepositoriesListFragment");
+            ActivityUtils.replaceFragment(getActivity().getSupportFragmentManager(), RepositoriesListFragment.newInstance(userinfo), R.id.fragment_container, RepositoriesListFragment.class.getName());
         }
     }
 

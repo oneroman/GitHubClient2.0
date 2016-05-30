@@ -13,15 +13,13 @@ import rx.schedulers.Schedulers;
  * Created by Anna on 28.05.2016.
  */
 public class RepositoriesManager {
-    private String user;
     private GitHubAPI githubApi;
 
-    public RepositoriesManager(String user, GitHubAPI githubApi) {
-        this.user = user;
+    public RepositoriesManager(GitHubAPI githubApi) {
         this.githubApi = githubApi;
     }
 
-    public Observable<List<Repository>> getUsersRepositories() {
+    public Observable<List<Repository>> getUsersRepositories(String user) {
         return githubApi.listRepositories(user)
                 /*.map(new Func1<List<RepositoryResponse>, ImmutableList<Repository>>() {
                     @Override
