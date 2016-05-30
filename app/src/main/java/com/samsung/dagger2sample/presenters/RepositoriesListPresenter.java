@@ -49,7 +49,7 @@ public class RepositoriesListPresenter implements RepositoriesList.Presenter {
         Logger.d(TAG, "starts getRepositories for user [" + username + "]");
         mView.showLoading(true);
 
-        subscriptions.add(mRepositoriesManager.getUsersRepositories(username).subscribe(new Observer<List<Repository>>() {
+        subscriptions.add(mRepositoriesManager.getOneByOneUsersRepositories(username).subscribe(new Observer<Repository>() {
             @Override
             public void onCompleted() {
                 Logger.d(TAG, "onCompleted");
@@ -63,9 +63,11 @@ public class RepositoriesListPresenter implements RepositoriesList.Presenter {
             }
 
             @Override
-            public void onNext(List<Repository> repositories) {
-                Logger.d(TAG, "onNext, repositories [" + repositories + "]");
-                mView.showRepositories(repositories);
+            public void onNext(Repository repository) {
+                Logger.d(TAG, "onNext, repository [" + repository + "]");
+                //lets hide as soon as got first item
+                mView.showLoading(false);
+                mView.appendRepository(repository);
             }
         }));
         Logger.d(TAG, "ends getRepositories");

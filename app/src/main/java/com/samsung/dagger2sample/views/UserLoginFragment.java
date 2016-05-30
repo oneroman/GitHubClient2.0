@@ -81,11 +81,19 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
 
         if(BuildConfig.DEBUG && savedInstanceState == null) {
             String tmpName = getResources().getString(R.string.default_debug_username);
-            userName.setText(tmpName);
+            RxTextView.text(userName).call(tmpName);
             userName.setSelection(tmpName.length());
         }
 
-        subscriptions.add(RxTextView.textChangeEvents(userName).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<TextViewTextChangeEvent>() {
+        subscriptions.add(RxTextView.textChangeEvents(userName).
+                observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getUsernameObserver()));
+
+        return view;
+    }
+
+    private Action1<TextViewTextChangeEvent> getUsernameObserver() {
+        return new Action1<TextViewTextChangeEvent>() {
             @Override
             public void call(TextViewTextChangeEvent textViewTextChangeEvent) {
                 String user = textViewTextChangeEvent.text().toString();
@@ -95,9 +103,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
                 final boolean failed = TextUtils.isEmpty(user);
                 RxTextInputLayout.error(username_layout).call(failed ? getResources().getString(R.string.username_empty_error) : null);
             }
-        }));
-
-        return view;
+        };
     }
 
     @OnClick(R.id.button_start)

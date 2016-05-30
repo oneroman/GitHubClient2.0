@@ -2,6 +2,7 @@ package com.samsung.dagger2sample.views;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -89,6 +90,11 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         recyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new RepositoryAdapter();
+
+        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+        itemAnimator.setAddDuration(1000);
+        itemAnimator.setRemoveDuration(1000);
+        recyclerView.setItemAnimator(itemAnimator);
         recyclerView.setAdapter(mAdapter);
         return view;
     }
@@ -110,5 +116,11 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
     public void showRepositories(List<Repository> list) {
         Logger.d(TAG, "showRepositories");
         mAdapter.addRespositories(list);
+    }
+
+    @Override
+    public void appendRepository(Repository repo) {
+        Logger.d(TAG, "appendRepository");
+        mAdapter.addRespository(repo);
     }
 }

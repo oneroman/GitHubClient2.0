@@ -51,7 +51,15 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Ho
         } else {
             mData.addAll(list);
         }
-        notifyDataSetChanged();
+        notifyItemRangeInserted(mData.size() - list.size(), mData.size());
+    }
+
+    public void addRespository(Repository repo) {
+        if(mData == null) {
+            mData = new ArrayList<>();
+        }
+        mData.add(repo);
+        notifyItemInserted(mData.size());
     }
 
     public static class Holder extends RecyclerView.ViewHolder {

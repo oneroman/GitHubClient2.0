@@ -19,7 +19,7 @@ public class RepositoriesManager {
         this.githubApi = githubApi;
     }
 
-    public Observable<List<Repository>> getUsersRepositories(String user) {
+    public Observable<Repository> getOneByOneUsersRepositories(String user) {
         return githubApi.listRepositories(user)
                 /*.map(new Func1<List<RepositoryResponse>, ImmutableList<Repository>>() {
                     @Override
@@ -27,14 +27,23 @@ public class RepositoriesManager {
                         final ImmutableList.Builder<Repository> listBuilder = ImmutableList.builder();
                         for (RepositoryResponse repositoryResponse : repositoriesListResponse) {
                             Repository repository = new Repository();
-                            repository.id = repositoryResponse.id;
-                            repository.name = repositoryResponse.name;
-                            repository.url = repositoryResponse.url;
                             listBuilder.add(repository);
                         }
                         return listBuilder.build();
                     }
                 })*/
+                .flatMap(new Func1<List<Repository>, Observable<Repository>>() {
+                    @Override
+                    public Observable<Repository> call(List<Repository> repositories) {
+                        return Observable.from(repositories);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<List<Repository>> getAllUsersRepositories(String user) {
+        return githubApi.listRepositories(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
