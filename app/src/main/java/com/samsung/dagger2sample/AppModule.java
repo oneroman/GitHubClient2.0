@@ -54,7 +54,7 @@ public class AppModule {
             builder.addInterceptor(logging);
         }
 
-        builder.connectTimeout(60, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS);
+        builder.connectTimeout(5, TimeUnit.SECONDS).readTimeout(5, TimeUnit.SECONDS);
 
         return builder.build();
     }
