@@ -34,7 +34,9 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Ho
     @Override
     public void onBindViewHolder(Holder holder, int position) {
 //        Logger.d(TAG, "onBindViewHolder, holder [" + holder + "], position [" + position + "]");
-        holder.tx.setText(mData.get(position).name);
+        Repository item = mData.get(position);
+        holder.tx.setText(item.name);
+        holder.description.setText(item.description);
     }
 
     @Override
@@ -51,6 +53,8 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Ho
 
         @BindView(R.id.text)
         TextView tx;
+        @BindView(R.id.description)
+        TextView description;
 
         public Holder(View itemView) {
             super(itemView);
