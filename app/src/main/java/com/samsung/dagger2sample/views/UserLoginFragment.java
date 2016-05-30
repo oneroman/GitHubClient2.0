@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
 import com.jakewharton.rxbinding.support.design.widget.RxTextInputLayout;
-import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
 import com.samsung.dagger2sample.BuildConfig;
@@ -33,8 +31,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Subscription;
 import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Anna on 27.05.2016.
@@ -47,8 +45,6 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
     EditText userName;
     @BindView(R.id.userName_layout)
     TextInputLayout username_layout;
-    @BindView(R.id.button_start)
-    View mButtonStart;
 
     private ProgressDialog mProgressDialog;
 
@@ -57,7 +53,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
     @Inject
     GitHubAPI mGitHub;
 
-    private Subscription usernameChangeSubscription;
+    private CompositeSubscription subscriptions = new CompositeSubscription();
 
     public UserLoginFragment() {
         // Required empty public constructor
@@ -88,7 +84,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
             userName.setSelection(tmpName.length());
         }
 
-        usernameChangeSubscription = RxTextView.textChangeEvents(userName).subscribe(new Action1<TextViewTextChangeEvent>() {
+        subscriptions.add(RxTextView.textChangeEvents(userName).subscribe(new Action1<TextViewTextChangeEvent>() {
             @Override
             public void call(TextViewTextChangeEvent textViewTextChangeEvent) {
                 String user = textViewTextChangeEvent.text().toString();
@@ -97,9 +93,8 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
                 mPresenter.setUsername(user);
                 final boolean failed = TextUtils.isEmpty(user);
                 RxTextInputLayout.error(username_layout).call(failed ? getResources().getString(R.string.username_empty_error) : null);
-//                RxView.enabled(mButtonStart).call(!failed);
             }
-        });
+        }));
 
         return view;
     }
@@ -125,7 +120,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
     public void onDestroyView() {
         Logger.d(TAG, "onDestroyView");
         super.onDestroyView();
-        usernameChangeSubscription.unsubscribe();
+        subscriptions.clear();
     }
 
     @Override
