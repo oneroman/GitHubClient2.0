@@ -3,6 +3,8 @@ package com.samsung.dagger2sample.GitHubAPI.pojo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by roman on 16. 5. 27.
  */
@@ -11,7 +13,8 @@ public class Repository implements Parcelable {
     public int id;
     public String name;
     public String full_name;
-    //public boolean private;
+    @SerializedName("private")
+    public boolean private_;
     public String html_url;
     public String description;
     public boolean fork;
