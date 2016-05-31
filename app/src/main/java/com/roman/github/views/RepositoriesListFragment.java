@@ -1,9 +1,16 @@
 package com.roman.github.views;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +18,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -45,6 +54,8 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
 
     private Userinfo mUserinfo;
 
+    @BindView(R.id.appBar)
+    AppBarLayout appBar;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.list)
@@ -96,13 +107,31 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.d(TAG, "onCreateView");
-        View view = inflater.inflate(R.layout.fragment_repositories_list, container, false);
+        final View view = inflater.inflate(R.layout.fragment_repositories_list, container, false);
         ButterKnife.bind(this, view);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         collapsing_toolbar.setTitle(mUserinfo == null ? getString(R.string.unknown_str) : mUserinfo.login);
 
+        if(savedInstanceState == null/* && animate == true*/) {
+            //animate = false;
+            view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    startInitAnimation();
+                    return true;
+                }
+            });
+        }
+
+        setList();
+
+        return view;
+    }
+
+    private void setList() {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -114,8 +143,6 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         itemAnimator.setRemoveDuration(1000);
         recyclerView.setItemAnimator(itemAnimator);
         recyclerView.setAdapter(mAdapter);
-
-        return view;
     }
 
     @Override
@@ -127,6 +154,32 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
             mPresenter.getRepositories(mUserinfo.login);
             downloadImage(headerImage, mUserinfo.avatar_url);
         }
+    }
+
+    private void startInitAnimation() {
+
+        //move toolbar out of screen
+        appBar.setTranslationY(-appBar.getHeight());
+
+        //animate it
+        appBar.animate()
+                .translationY(0)
+                .setInterpolator(new DecelerateInterpolator())
+                .setDuration(300)
+                .setStartDelay(100)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        //animateContent();
+                    }
+                })
+                .start();
+    }
+
+    @Override
+    public void onDestroy() {
+        Logger.d(TAG, "onDestroy");
+        super.onDestroy();
     }
 
     @Override
@@ -146,17 +199,52 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         mAdapter.addRespository(repo);
     }
 
-    private void downloadImage(ImageView img, String url) {
+    private void downloadImage(final ImageView img, String url) {
         Logger.d(TAG, "downloadImage, url [" + url + "]");
         mPicasso.load(url).into(img, new Callback.EmptyCallback() {
             @Override public void onSuccess() {
                 Logger.d(TAG, "image downloaded");
+                updateViewsColors(img);
             }
 
             @Override public void onError() {
-                Logger.d(TAG, "image not downloaded");
+                Logger.e(TAG, "image not downloaded");
             }
         });
+    }
+
+    private void updateViewsColors(ImageView img) {
+        Bitmap bitmap = null;
+        if(img != null) {
+            Drawable drawable = img.getDrawable();
+            if(drawable != null && drawable instanceof BitmapDrawable) {
+                bitmap = ((BitmapDrawable) drawable).getBitmap();
+            }
+        }
+        if(bitmap != null && !bitmap.isRecycled()) {
+            Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                @Override
+                public void onGenerated(Palette palette) {
+                    Logger.d(TAG, "onGenerated, palette [" + palette + "]");
+
+                    int colorVibrantDefaultInt = getResources().getColor(R.color.colorPrimary);
+                    int colorVibrantInt = palette.getVibrantColor(colorVibrantDefaultInt);
+                    Logger.d(TAG, "onGenerated, colorVibrantInt [" + colorVibrantInt + "], default [" + colorVibrantDefaultInt + "]");
+
+                    int colorMutedDefaultInt = getResources().getColor(android.R.color.white);
+                    int colorMutedInt = palette.getMutedColor(colorMutedDefaultInt);
+                    Logger.d(TAG, "onGenerated, colorMutedInt [" + colorMutedInt + "], default [" + colorMutedDefaultInt + "]");
+
+                    int colorDarkMutedDefaultInt = getResources().getColor(R.color.colorPrimary);
+                    int colorDarkMutedInt = palette.getDarkMutedColor(colorDarkMutedDefaultInt);
+                    Logger.d(TAG, "onGenerated, colorDarkMutedInt [" + colorDarkMutedInt + "], default [" + colorDarkMutedDefaultInt + "]");
+
+                    collapsing_toolbar.setContentScrimColor(colorVibrantInt);
+                    collapsing_toolbar.setCollapsedTitleTextColor(colorMutedInt);
+                    collapsing_toolbar.setExpandedTitleColor(colorDarkMutedInt);
+                }
+            });
+        }
     }
 
 }

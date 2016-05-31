@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +19,6 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.jakewharton.rxbinding.support.design.widget.RxTextInputLayout;
 import com.jakewharton.rxbinding.widget.RxTextView;
@@ -52,13 +52,14 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.userName)
-    EditText userName;
+    TextInputEditText userName;
     @BindView(R.id.userName_layout)
     TextInputLayout username_layout;
     @BindView(R.id.button_start)
     Button button_start;
 
     private ProgressDialog mProgressDialog;
+    private boolean animate = true;
 
     @Inject
     UserLogin.Presenter mPresenter;
@@ -92,7 +93,8 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        if(savedInstanceState == null) {
+        if(savedInstanceState == null && animate == true) {
+            animate = false;
             view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {

@@ -29,4 +29,12 @@
         -->
     </style>
 
+    <style name="TextTitleStyle" parent="@android:style/TextAppearance.DeviceDefault.Medium">
+        <item name="android:textColor">@color/color_text_title</item>
+    </style>
+
+
+    <style name="TextTitleSubStyle" parent="@android:style/TextAppearance.DeviceDefault.Small">
+    </style>
+
 </resources>

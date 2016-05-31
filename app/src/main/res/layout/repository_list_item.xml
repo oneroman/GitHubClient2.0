@@ -17,7 +17,7 @@
 
         <TextView
             android:id="@+id/text"
-            style="@android:style/TextAppearance.DeviceDefault.Medium"
+            style="@style/TextTitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -30,7 +30,7 @@
 
         <TextView
             android:id="@+id/description"
-            style="@android:style/TextAppearance.DeviceDefault.Small"
+            style="@style/TextTitleSubStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="4"/>
