@@ -2,11 +2,13 @@ package com.roman.github;
 
 import android.app.Application;
 
+import com.jakewharton.picasso.OkHttp3Downloader;
 import com.roman.github.GitHubAPI.GitHubAPI;
 import com.roman.github.presenters.RepositoriesList;
 import com.roman.github.presenters.RepositoriesListPresenter;
 import com.roman.github.presenters.UserLogin;
 import com.roman.github.presenters.UserLoginPresenter;
+import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.TimeUnit;
 
@@ -88,5 +90,14 @@ public class AppModule {
     @Singleton
     GitHubAPI provideGitHubAPI(Retrofit retrofit) {
         return retrofit.create(GitHubAPI.class);
+    }
+
+    @Provides
+    @Singleton
+    Picasso providePicasso(OkHttpClient okHttpClient) {
+        Picasso picasso = new Picasso.Builder(app)
+                .downloader(new OkHttp3Downloader(okHttpClient))
+                .build();
+        return picasso;
     }
 }

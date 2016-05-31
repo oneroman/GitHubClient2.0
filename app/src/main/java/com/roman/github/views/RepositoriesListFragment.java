@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.roman.github.GitHubAPI.pojo.Repository;
@@ -21,8 +22,9 @@ import com.roman.github.GitHubAPI.GitHubAPI;
 import com.roman.github.MyApplication;
 import com.roman.github.R;
 import com.roman.github.presenters.RepositoriesList;
-import com.roman.github.presenters.RepositoriesListPresenter;
 import com.roman.github.utils.Logger;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -54,6 +56,8 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
     ProgressBar mProgressBar;
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsing_toolbar;
+    @BindView(R.id.header)
+    ImageView headerImage;
 
     @Inject
     RepositoriesList.Presenter mPresenter;
@@ -61,6 +65,8 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
     GitHubAPI mGitHubApi;
     @Inject
     ExecutorService mExecutor;
+    @Inject
+    Picasso mPicasso;
 
     @Override
     protected void setup() {
@@ -108,6 +114,7 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         itemAnimator.setRemoveDuration(1000);
         recyclerView.setItemAnimator(itemAnimator);
         recyclerView.setAdapter(mAdapter);
+
         return view;
     }
 
@@ -118,6 +125,7 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
 
         if(mUserinfo != null) {
             mPresenter.getRepositories(mUserinfo.login);
+            downloadImage(headerImage, mUserinfo.avatar_url);
         }
     }
 
@@ -137,4 +145,18 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         Logger.d(TAG, "appendRepository");
         mAdapter.addRespository(repo);
     }
+
+    private void downloadImage(ImageView img, String url) {
+        Logger.d(TAG, "downloadImage, url [" + url + "]");
+        mPicasso.load(url).into(img, new Callback.EmptyCallback() {
+            @Override public void onSuccess() {
+                Logger.d(TAG, "image downloaded");
+            }
+
+            @Override public void onError() {
+                Logger.d(TAG, "image not downloaded");
+            }
+        });
+    }
+
 }
