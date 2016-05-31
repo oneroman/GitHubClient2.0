@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +44,8 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
 
     private static final String TAG = UserLoginFragment.class.getSimpleName();
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.userName)
     EditText userName;
     @BindView(R.id.userName_layout)
@@ -78,6 +82,8 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
         Logger.d(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_user_login, container, false);
         ButterKnife.bind(this, view);
+
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         if(BuildConfig.DEBUG && savedInstanceState == null) {
             String tmpName = getResources().getString(R.string.default_debug_username);

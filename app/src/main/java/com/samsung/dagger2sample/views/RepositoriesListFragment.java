@@ -2,9 +2,11 @@ package com.samsung.dagger2sample.views;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,8 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
 
     private Userinfo mUserinfo;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.list)
     RecyclerView recyclerView;
     private RepositoryAdapter mAdapter;
@@ -85,6 +89,9 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         Logger.d(TAG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_repositories_list, container, false);
         ButterKnife.bind(this, view);
+
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);

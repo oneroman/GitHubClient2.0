@@ -15,18 +15,11 @@ public class LaunchActivity extends BaseActivity {
 
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Logger.d(TAG, "onCreate, savedInstanceState [" + savedInstanceState + "]");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ButterKnife.bind(this);
-
-        setSupportActionBar(toolbar);
 
         if(savedInstanceState == null) {
             UserLoginFragment fragment = new UserLoginFragment();
