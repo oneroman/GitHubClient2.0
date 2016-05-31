@@ -111,7 +111,9 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         Logger.d(TAG, "onCreateView");
         super.onViewCreated(view, savedInstanceState);
 
-        mPresenter.getRepositories(mUserinfo.login);
+        if(mUserinfo != null) {
+            mPresenter.getRepositories(mUserinfo.login);
+        }
     }
 
     @Override
