@@ -15,6 +15,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        com.squareup.leakcanary.LeakCanary.install(this);
+
         mRepositoriesListComponent = DaggerAppComponent.builder().
                 appModule(new AppModule(this))
                 .threadPoolModule(new ThreadPoolModule())
