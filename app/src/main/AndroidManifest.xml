@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.samsung.dagger2sample">
+    package="com.roman.github">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
