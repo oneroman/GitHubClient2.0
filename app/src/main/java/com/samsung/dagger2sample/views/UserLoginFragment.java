@@ -1,5 +1,7 @@
 package com.samsung.dagger2sample.views;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +14,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.jakewharton.rxbinding.support.design.widget.RxTextInputLayout;
@@ -40,7 +45,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Anna on 27.05.2016.
  */
-public class UserLoginFragment extends BaseFragment implements UserLogin.View {
+public class UserLoginFragment extends BaseFragment implements UserLogin.View, BackKeyListener {
 
     private static final String TAG = UserLoginFragment.class.getSimpleName();
 
@@ -50,6 +55,8 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
     EditText userName;
     @BindView(R.id.userName_layout)
     TextInputLayout username_layout;
+    @BindView(R.id.button_start)
+    Button button_start;
 
     private ProgressDialog mProgressDialog;
 
@@ -80,10 +87,21 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.d(TAG, "onCreateView");
-        View view = inflater.inflate(R.layout.fragment_user_login, container, false);
+        final View view = inflater.inflate(R.layout.fragment_user_login, container, false);
         ButterKnife.bind(this, view);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        if(savedInstanceState == null) {
+            view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    startInitAnimation();
+                    return true;
+                }
+            });
+        }
 
         if(BuildConfig.DEBUG && savedInstanceState == null) {
             String tmpName = getResources().getString(R.string.default_debug_username);
@@ -96,6 +114,61 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
                 .subscribe(getUsernameObserver()));
 
         return view;
+    }
+
+    private void startInitAnimation() {
+        username_layout.setScaleY(0.0f);
+        button_start.setScaleY(0.0f);
+
+        //move toolbar out of screen
+        toolbar.setTranslationY(-toolbar.getHeight());
+
+        //animate it
+        toolbar.animate()
+                .translationY(0)
+                .setInterpolator(new DecelerateInterpolator())
+                .setDuration(300)
+                .setStartDelay(100)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        animateContent();
+                    }
+                })
+                .start();
+    }
+
+    private void animateContent() {
+        username_layout.animate()
+                .scaleY(1.0f)
+                .setDuration(300)
+                .setInterpolator(new DecelerateInterpolator())
+                .start();
+        button_start.animate()
+                .scaleY(1.0f)
+                .setDuration(500)
+                .setInterpolator(new DecelerateInterpolator())
+                .start();
+    }
+
+    private void exitAnimation() {
+        toolbar.animate()
+                .translationY(0)
+                .setInterpolator(new DecelerateInterpolator())
+                .setDuration(300)
+                .start();
+
+        username_layout.animate()
+                .scaleY(0.0f)
+                .setDuration(300)
+                .setInterpolator(new DecelerateInterpolator())
+                .start();
+
+        button_start.animate()
+                .scaleY(0.0f)
+                .setDuration(500)
+                .setInterpolator(new DecelerateInterpolator())
+                .start();
     }
 
     private Action1<TextViewTextChangeEvent> getUsernameObserver() {
@@ -149,12 +222,16 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
         mProgressDialog.show();
     }
 
-    @Override
-    public void showUserinfo(Userinfo userinfo) {
-        Logger.d(TAG, "showUserinfo [" + userinfo + "]");
+    private void hideProgress() {
         if(mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
+    }
+
+    @Override
+    public void showUserinfo(Userinfo userinfo) {
+        Logger.d(TAG, "showUserinfo [" + userinfo + "]");
+        hideProgress();
 
         if(userinfo == null) {
             showWrongUserInfo();
@@ -167,5 +244,10 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View {
         CoordinatorLayout coordinatorLayout = ButterKnife.findById(getActivity(), R.id.coordinatorLayout);
         Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.error_user_does_not_exist, Snackbar.LENGTH_LONG);
         snackbar.show();
+    }
+
+    @Override
+    public void onBackKey() {
+        exitAnimation();
     }
 }

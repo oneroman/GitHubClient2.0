@@ -1,15 +1,13 @@
 package com.samsung.dagger2sample;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.Fragment;
 
 import com.samsung.dagger2sample.base.BaseActivity;
 import com.samsung.dagger2sample.utils.ActivityUtils;
 import com.samsung.dagger2sample.utils.Logger;
+import com.samsung.dagger2sample.views.BackKeyListener;
 import com.samsung.dagger2sample.views.UserLoginFragment;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class LaunchActivity extends BaseActivity {
 
@@ -22,9 +20,27 @@ public class LaunchActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         if(savedInstanceState == null) {
-            UserLoginFragment fragment = new UserLoginFragment();
-            ActivityUtils.replaceFragment(getSupportFragmentManager(), fragment, R.id.fragment_container, null );
+            Fragment fragment = new UserLoginFragment();
+            ActivityUtils.replaceFragment(getSupportFragmentManager(), fragment, getFragmentId(), null );
         }
+    }
+
+    private int getFragmentId() {
+        return R.id.fragment_container;
+    }
+
+    private Fragment getCurrentFragment() {
+        return getSupportFragmentManager().findFragmentById(getFragmentId());
+    }
+
+    @Override
+    public void onBackPressed() {
+        Logger.d(TAG, "onBackPressed");
+        Fragment fragment = getCurrentFragment();
+        if (fragment != null && fragment instanceof BackKeyListener) {
+            ((BackKeyListener) fragment).onBackKey();
+        }
+        super.onBackPressed();
     }
 
 }

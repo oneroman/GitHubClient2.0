@@ -2,6 +2,7 @@ package com.samsung.dagger2sample.views;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -51,6 +52,8 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
 
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsing_toolbar;
 
     @Inject
     RepositoriesList.Presenter mPresenter;
@@ -91,6 +94,8 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         ButterKnife.bind(this, view);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        collapsing_toolbar.setTitle(mUserinfo == null ? getString(R.string.unknown_str) : mUserinfo.login);
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getContext());
