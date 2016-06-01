@@ -4,10 +4,6 @@ import android.app.Application;
 
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.roman.github.GitHubAPI.GitHubAPI;
-import com.roman.github.presenters.RepositoriesList;
-import com.roman.github.presenters.RepositoriesListPresenter;
-import com.roman.github.presenters.UserLogin;
-import com.roman.github.presenters.UserLoginPresenter;
 import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.TimeUnit;
@@ -27,7 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by Anna on 27.05.2016.
  */
-@Singleton
 @Module
 public class AppModule {
 
@@ -35,18 +30,6 @@ public class AppModule {
 
     public AppModule(Application app) {
         this.app = app;
-    }
-
-    @Provides
-    @Singleton
-    UserLogin.Presenter providesUserLoginPresenter() {
-        return new UserLoginPresenter();
-    }
-
-    @Provides
-    @Singleton
-    RepositoriesList.Presenter providesRepositoriesListPresenter() {
-        return new RepositoriesListPresenter();
     }
 
     @Provides
@@ -98,6 +81,11 @@ public class AppModule {
         Picasso picasso = new Picasso.Builder(app)
                 .downloader(new OkHttp3Downloader(okHttpClient))
                 .build();
+
+        if (BuildConfig.DEBUG) {
+            picasso.setIndicatorsEnabled(true);
+            picasso.setLoggingEnabled(true);
+        }
         return picasso;
     }
 }

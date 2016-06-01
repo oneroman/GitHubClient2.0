@@ -18,7 +18,6 @@ public interface UserLogin {
     }
 
     interface Presenter extends BasePresenter<View> {
-        void init(GitHubAPI gitHub);
 
         String getUsername();
         void setUsername(String value);

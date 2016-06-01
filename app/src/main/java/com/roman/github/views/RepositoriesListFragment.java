@@ -1,7 +1,5 @@
 package com.roman.github.views;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -23,11 +21,14 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.roman.github.AppComponent;
 import com.roman.github.GitHubAPI.pojo.Repository;
 import com.roman.github.GitHubAPI.pojo.Userinfo;
+import com.roman.github.components.DaggerRespositoriesListComponent;
+import com.roman.github.modules.RepositoriesListModule;
+import com.roman.github.components.RespositoriesListComponent;
 import com.roman.github.adapters.RepositoryAdapter;
 import com.roman.github.base.BaseFragment;
-import com.roman.github.GitHubAPI.GitHubAPI;
 import com.roman.github.MyApplication;
 import com.roman.github.R;
 import com.roman.github.presenters.RepositoriesList;
@@ -36,7 +37,6 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 import javax.inject.Inject;
 
@@ -70,21 +70,20 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
     @BindView(R.id.header)
     ImageView headerImage;
 
+    private RespositoriesListComponent mRepositoriesListComponent;
     @Inject
     RepositoriesList.Presenter mPresenter;
-    @Inject
-    GitHubAPI mGitHubApi;
-    @Inject
-    ExecutorService mExecutor;
     @Inject
     Picasso mPicasso;
 
     @Override
-    protected void setup() {
-        ((MyApplication) getActivity().getApplication()).getRepositoriesListComponent().inject(this);
-
-        mPresenter.setView(this);
-        mPresenter.init(mGitHubApi, mExecutor);
+    protected void setupDI() {
+        AppComponent appComponent = ((MyApplication) getActivity().getApplication()).getAppComponent();
+        mRepositoriesListComponent = DaggerRespositoriesListComponent.builder()
+                .appComponent(appComponent)
+                .repositoriesListModule(new RepositoriesListModule(this, appComponent.gitHubAPI()))
+                .build();
+        mRepositoriesListComponent.inject(this);
     }
 
     public static RepositoriesListFragment newInstance(Userinfo userinfo) {
@@ -167,12 +166,6 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
                 .setInterpolator(new DecelerateInterpolator())
                 .setDuration(300)
                 .setStartDelay(100)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        //animateContent();
-                    }
-                })
                 .start();
     }
 

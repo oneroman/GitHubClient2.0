@@ -23,11 +23,14 @@ import android.widget.Button;
 import com.jakewharton.rxbinding.support.design.widget.RxTextInputLayout;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
+import com.roman.github.AppComponent;
 import com.roman.github.BuildConfig;
-import com.roman.github.GitHubAPI.GitHubAPI;
 import com.roman.github.GitHubAPI.pojo.Userinfo;
 import com.roman.github.MyApplication;
 import com.roman.github.R;
+import com.roman.github.components.DaggerUserLoginComponent;
+import com.roman.github.components.UserLoginComponent;
+import com.roman.github.modules.UserLoginModule;
 import com.roman.github.base.BaseFragment;
 import com.roman.github.presenters.UserLogin;
 import com.roman.github.utils.ActivityUtils;
@@ -61,10 +64,9 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     private ProgressDialog mProgressDialog;
     private boolean animate = true;
 
+    private UserLoginComponent mUserLoginComponent;
     @Inject
     UserLogin.Presenter mPresenter;
-    @Inject
-    GitHubAPI mGitHub;
 
     private CompositeSubscription subscriptions = new CompositeSubscription();
 
@@ -73,10 +75,12 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     }
 
     @Override
-    protected void setup() {
-        ((MyApplication) getActivity().getApplication()).getRepositoriesListComponent().inject(this);
-        mPresenter.init(mGitHub);
-        mPresenter.setView(this);
+    protected void setupDI() {
+        AppComponent appComponent = ((MyApplication) getActivity().getApplication()).getAppComponent();
+        mUserLoginComponent = DaggerUserLoginComponent.builder().appComponent(appComponent)
+                .userLoginModule(new UserLoginModule(this, appComponent.gitHubAPI()))
+                .build();
+        mUserLoginComponent.inject(this);
     }
 
     @Override

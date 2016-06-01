@@ -1,8 +1,9 @@
-package com.roman.github;
+package com.roman.github.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.roman.github.R;
 import com.roman.github.base.BaseActivity;
 import com.roman.github.utils.ActivityUtils;
 import com.roman.github.utils.Logger;

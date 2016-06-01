@@ -24,7 +24,7 @@ public class MyApplication extends Application {
 
     }
 
-    public AppComponent getRepositoriesListComponent() {
+    public AppComponent getAppComponent() {
         return mRepositoriesListComponent;
     }
 

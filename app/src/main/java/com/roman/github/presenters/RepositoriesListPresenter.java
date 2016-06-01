@@ -5,9 +5,6 @@ import com.roman.github.GitHubAPI.RepositoriesManager;
 import com.roman.github.GitHubAPI.pojo.Repository;
 import com.roman.github.utils.Logger;
 
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-
 import rx.Observer;
 import rx.subscriptions.CompositeSubscription;
 
@@ -22,26 +19,18 @@ public class RepositoriesListPresenter implements RepositoriesList.Presenter {
 
     GitHubAPI mGitHubApi;
 
-    ExecutorService mExecutor;
-
     private CompositeSubscription subscriptions = new CompositeSubscription();
 
     RepositoriesManager mRepositoriesManager;
 
-    @Override
-    public void setView(RepositoriesList.View view) {
+    public RepositoriesListPresenter(RepositoriesList.View view, GitHubAPI gitHubApi) {
         mView = view;
+        mGitHubApi = gitHubApi;
+        mRepositoriesManager = new RepositoriesManager(mGitHubApi);
     }
 
     @Override
     public void start() {
-    }
-
-    @Override
-    public void init(GitHubAPI gitHubApi, ExecutorService executor) {
-        mGitHubApi = gitHubApi;
-        mExecutor = executor;
-        mRepositoriesManager = new RepositoriesManager(mGitHubApi);
     }
 
     @Override

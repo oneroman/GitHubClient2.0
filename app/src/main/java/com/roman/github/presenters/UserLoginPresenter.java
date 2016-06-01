@@ -20,18 +20,13 @@ public class UserLoginPresenter implements UserLogin.Presenter {
     private GitHubAPI mGitHub;
     private UserinfoManager mUserinfoManager;
 
-    @Override
-    public void setView(UserLogin.View view) {
+    public UserLoginPresenter(UserLogin.View view, GitHubAPI gitHub) {
         mView = view;
+        mGitHub = gitHub;
     }
 
     @Override
     public void start() {
-    }
-
-    @Override
-    public void init(GitHubAPI gitHub) {
-        mGitHub = gitHub;
     }
 
     @Override
