@@ -34,6 +34,7 @@ import com.roman.github.presenters.UserLogin;
 import com.roman.github.utils.ActivityUtils;
 import com.roman.github.utils.Logger;
 import com.roman.github.utils.TextUtils;
+import com.roman.github.views.controllers.KeyboardController;
 
 import javax.inject.Inject;
 
@@ -193,6 +194,8 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     @OnClick(R.id.button_start)
     public void onStartClick() {
         Logger.d(TAG, "onStartClick");
+
+        KeyboardController.hideKeyboard(getContext(), username_layout);
 
         mPresenter.validateUserinfo();
     }
