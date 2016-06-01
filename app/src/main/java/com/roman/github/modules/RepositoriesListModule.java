@@ -1,5 +1,6 @@
 package com.roman.github.modules;
 
+import com.roman.github.FragmentScope;
 import com.roman.github.GitHubAPI.GitHubAPI;
 import com.roman.github.presenters.RepositoriesList;
 import com.roman.github.presenters.RepositoriesListPresenter;
@@ -10,15 +11,14 @@ import dagger.Provides;
 @Module
 public class RepositoriesListModule {
     RepositoriesList.View view;
-    GitHubAPI gitHubAPI;
 
-    public RepositoriesListModule(RepositoriesList.View view, GitHubAPI gitHub) {
+    public RepositoriesListModule(RepositoriesList.View view) {
         this.view = view;
-        this.gitHubAPI = gitHub;
     }
 
     @Provides
-    RepositoriesList.Presenter getRepositoriesListPresenter() {
-        return new RepositoriesListPresenter(view, gitHubAPI);
+    @FragmentScope
+    RepositoriesList.Presenter getRepositoriesListPresenter(GitHubAPI gitHub) {
+        return new RepositoriesListPresenter(view, gitHub);
     }
 }

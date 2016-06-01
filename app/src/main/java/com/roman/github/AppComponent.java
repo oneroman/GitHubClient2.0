@@ -1,8 +1,10 @@
 package com.roman.github;
 
-import com.roman.github.GitHubAPI.GitHubAPI;
+import com.roman.github.components.RespositoriesListComponent;
+import com.roman.github.components.UserLoginComponent;
+import com.roman.github.modules.RepositoriesListModule;
+import com.roman.github.modules.UserLoginModule;
 import com.roman.github.pool.ThreadPoolModule;
-import com.squareup.picasso.Picasso;
 
 import javax.inject.Singleton;
 
@@ -14,6 +16,8 @@ import dagger.Component;
 @Singleton
 @Component(modules={AppModule.class, ThreadPoolModule.class})
 public interface AppComponent {
-    GitHubAPI gitHubAPI();
-    Picasso picasso();
+
+    RespositoriesListComponent plus(RepositoriesListModule module);
+    UserLoginComponent plus(UserLoginModule module);
+
 }

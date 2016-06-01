@@ -21,12 +21,9 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.roman.github.AppComponent;
-import com.roman.github.components.DaggerRespositoriesListComponent;
 import com.roman.github.data.RepositoryData;
 import com.roman.github.data.UserInfoData;
 import com.roman.github.modules.RepositoriesListModule;
-import com.roman.github.components.RespositoriesListComponent;
 import com.roman.github.adapters.RepositoryAdapter;
 import com.roman.github.base.BaseFragment;
 import com.roman.github.R;
@@ -69,7 +66,6 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
     @BindView(R.id.header)
     ImageView headerImage;
 
-    private RespositoriesListComponent mRepositoriesListComponent;
     @Inject
     RepositoriesList.Presenter mPresenter;
     @Inject
@@ -77,12 +73,7 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
 
     @Override
     protected void setupDI() {
-        AppComponent appComponent = getAppComponent();
-        mRepositoriesListComponent = DaggerRespositoriesListComponent.builder()
-                .appComponent(appComponent)
-                .repositoriesListModule(new RepositoriesListModule(this, appComponent.gitHubAPI()))
-                .build();
-        mRepositoriesListComponent.inject(this);
+        getAppComponent().plus(new RepositoriesListModule(this)).inject(this);
     }
 
     public static RepositoriesListFragment newInstance(UserInfoData userinfo) {

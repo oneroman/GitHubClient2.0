@@ -22,11 +22,8 @@ import android.widget.Button;
 import com.jakewharton.rxbinding.support.design.widget.RxTextInputLayout;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
-import com.roman.github.AppComponent;
 import com.roman.github.BuildConfig;
 import com.roman.github.R;
-import com.roman.github.components.DaggerUserLoginComponent;
-import com.roman.github.components.UserLoginComponent;
 import com.roman.github.data.UserInfoData;
 import com.roman.github.modules.UserLoginModule;
 import com.roman.github.base.BaseFragment;
@@ -64,7 +61,6 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     private ProgressDialog mProgressDialog;
     private boolean animate = true;
 
-    private UserLoginComponent mUserLoginComponent;
     @Inject
     UserLogin.Presenter mPresenter;
 
@@ -76,11 +72,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
 
     @Override
     protected void setupDI() {
-        AppComponent appComponent = getAppComponent();
-        mUserLoginComponent = DaggerUserLoginComponent.builder().appComponent(appComponent)
-                .userLoginModule(new UserLoginModule(this, appComponent.gitHubAPI()))
-                .build();
-        mUserLoginComponent.inject(this);
+        getAppComponent().plus(new UserLoginModule(this)).inject(this);
     }
 
     @Override
