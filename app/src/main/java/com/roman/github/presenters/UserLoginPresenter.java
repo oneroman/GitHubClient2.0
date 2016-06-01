@@ -4,6 +4,7 @@ import com.roman.github.GitHubAPI.GitHubAPI;
 import com.roman.github.GitHubAPI.UserinfoManager;
 import com.roman.github.GitHubAPI.pojo.Userinfo;
 import com.roman.github.utils.Logger;
+import com.roman.github.utils.TextUtils;
 
 import rx.Observer;
 
@@ -30,18 +31,24 @@ public class UserLoginPresenter implements UserLogin.Presenter {
     }
 
     @Override
-    public String getUsername() {
-        return mUsername;
-    }
-
-    @Override
     public void setUsername(String value) {
         mUsername = value;
     }
 
+    private boolean validateUserName() {
+        final boolean correct = !TextUtils.isEmpty(mUsername);
+        if(!correct) {
+            mView.wrongUsername();
+        }
+        return correct;
+    }
+
     @Override
-    public void getUserinfo() {
-        Logger.d(TAG, "getUserinfo");
+    public void validateUserinfo() {
+        Logger.d(TAG, "validateUserinfo");
+        if(!validateUserName()) {
+            return;
+        }
         mView.requestingUserinfo();
 
         mUserinfoManager = new UserinfoManager(mGitHub);

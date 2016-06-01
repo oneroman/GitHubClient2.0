@@ -29,7 +29,6 @@ import com.roman.github.modules.RepositoriesListModule;
 import com.roman.github.components.RespositoriesListComponent;
 import com.roman.github.adapters.RepositoryAdapter;
 import com.roman.github.base.BaseFragment;
-import com.roman.github.MyApplication;
 import com.roman.github.R;
 import com.roman.github.presenters.RepositoriesList;
 import com.roman.github.utils.Logger;
@@ -78,7 +77,7 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
 
     @Override
     protected void setupDI() {
-        AppComponent appComponent = ((MyApplication) getActivity().getApplication()).getAppComponent();
+        AppComponent appComponent = getAppComponent();
         mRepositoriesListComponent = DaggerRespositoriesListComponent.builder()
                 .appComponent(appComponent)
                 .repositoriesListModule(new RepositoriesListModule(this, appComponent.gitHubAPI()))

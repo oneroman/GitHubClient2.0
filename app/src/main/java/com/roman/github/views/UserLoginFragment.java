@@ -11,7 +11,6 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,6 @@ import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
 import com.roman.github.AppComponent;
 import com.roman.github.BuildConfig;
 import com.roman.github.GitHubAPI.pojo.Userinfo;
-import com.roman.github.MyApplication;
 import com.roman.github.R;
 import com.roman.github.components.DaggerUserLoginComponent;
 import com.roman.github.components.UserLoginComponent;
@@ -35,6 +33,7 @@ import com.roman.github.base.BaseFragment;
 import com.roman.github.presenters.UserLogin;
 import com.roman.github.utils.ActivityUtils;
 import com.roman.github.utils.Logger;
+import com.roman.github.utils.TextUtils;
 
 import javax.inject.Inject;
 
@@ -76,7 +75,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
 
     @Override
     protected void setupDI() {
-        AppComponent appComponent = ((MyApplication) getActivity().getApplication()).getAppComponent();
+        AppComponent appComponent = getAppComponent();
         mUserLoginComponent = DaggerUserLoginComponent.builder().appComponent(appComponent)
                 .userLoginModule(new UserLoginModule(this, appComponent.gitHubAPI()))
                 .build();
@@ -194,18 +193,13 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     @OnClick(R.id.button_start)
     public void onStartClick() {
         Logger.d(TAG, "onStartClick");
-        boolean success = true;
-        //need to proceed every input data and animate them if they are wrong one by one
-        String name = mPresenter.getUsername();
-        if(TextUtils.isEmpty(name)) {
-            username_layout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake_error));
-            success = false;
-        }
 
-        //if we validate all data then let's proceed next step
-        if (success) {
-            mPresenter.getUserinfo();
-        }
+        mPresenter.validateUserinfo();
+    }
+
+    @Override
+    public void wrongUsername() {
+        username_layout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake_error));
     }
 
     @Override
