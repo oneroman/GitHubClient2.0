@@ -6,9 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.roman.github.GitHubAPI.pojo.Repository;
 import com.roman.github.R;
-import com.roman.github.utils.Logger;
+import com.roman.github.data.RepositoryData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Ho
 
     private static final String TAG = RepositoryAdapter.class.getSimpleName();
 
-    private List<Repository> mData;
+    private List<RepositoryData> mData;
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -35,9 +34,9 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Ho
     @Override
     public void onBindViewHolder(Holder holder, int position) {
 //        Logger.d(TAG, "onBindViewHolder, holder [" + holder + "], position [" + position + "]");
-        Repository item = mData.get(position);
-        holder.tx.setText(item.name);
-        holder.description.setText(item.description);
+        RepositoryData item = mData.get(position);
+        holder.tx.setText(item.getName());
+        holder.description.setText(item.getDescription());
     }
 
     @Override
@@ -45,7 +44,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Ho
         return mData == null ? 0 : mData.size();
     }
 
-    public void addRespositories(List<Repository> list) {
+    public void addRespositories(List<RepositoryData> list) {
         if(mData == null) {
             mData = new ArrayList<>(list);
         } else {
@@ -54,7 +53,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Ho
         notifyItemRangeInserted(mData.size() - list.size(), mData.size());
     }
 
-    public void addRespository(Repository repo) {
+    public void addRespository(RepositoryData repo) {
         if(mData == null) {
             mData = new ArrayList<>();
         }

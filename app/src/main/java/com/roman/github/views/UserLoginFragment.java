@@ -24,10 +24,10 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
 import com.roman.github.AppComponent;
 import com.roman.github.BuildConfig;
-import com.roman.github.GitHubAPI.pojo.Userinfo;
 import com.roman.github.R;
 import com.roman.github.components.DaggerUserLoginComponent;
 import com.roman.github.components.UserLoginComponent;
+import com.roman.github.data.UserInfoData;
 import com.roman.github.modules.UserLoginModule;
 import com.roman.github.base.BaseFragment;
 import com.roman.github.presenters.UserLogin;
@@ -229,7 +229,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     }
 
     @Override
-    public void showUserinfo(Userinfo userinfo) {
+    public void showUserinfo(UserInfoData userinfo) {
         Logger.d(TAG, "showUserinfo [" + userinfo + "]");
         hideProgress();
 

@@ -22,9 +22,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.roman.github.AppComponent;
-import com.roman.github.GitHubAPI.pojo.Repository;
-import com.roman.github.GitHubAPI.pojo.Userinfo;
 import com.roman.github.components.DaggerRespositoriesListComponent;
+import com.roman.github.data.RepositoryData;
+import com.roman.github.data.UserInfoData;
 import com.roman.github.modules.RepositoriesListModule;
 import com.roman.github.components.RespositoriesListComponent;
 import com.roman.github.adapters.RepositoryAdapter;
@@ -51,7 +51,7 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
 
     private static final String USERINFO = "userinfo";
 
-    private Userinfo mUserinfo;
+    private UserInfoData mUserinfo;
 
     @BindView(R.id.appBar)
     AppBarLayout appBar;
@@ -85,7 +85,7 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         mRepositoriesListComponent.inject(this);
     }
 
-    public static RepositoriesListFragment newInstance(Userinfo userinfo) {
+    public static RepositoriesListFragment newInstance(UserInfoData userinfo) {
         RepositoriesListFragment fragment = new RepositoriesListFragment();
         Bundle args = new Bundle();
         args.putParcelable(USERINFO, userinfo);
@@ -110,7 +110,7 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        collapsing_toolbar.setTitle(mUserinfo == null ? getString(R.string.unknown_str) : mUserinfo.login);
+        collapsing_toolbar.setTitle(mUserinfo == null ? getString(R.string.unknown_str) : mUserinfo.getLogin());
 
         if(savedInstanceState == null/* && animate == true*/) {
             //animate = false;
@@ -149,8 +149,8 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         super.onViewCreated(view, savedInstanceState);
 
         if(mUserinfo != null) {
-            mPresenter.getRepositories(mUserinfo.login);
-            downloadImage(headerImage, mUserinfo.avatar_url);
+            mPresenter.getRepositories(mUserinfo.getLogin());
+            downloadImage(headerImage, mUserinfo.getAvatarUrl());
         }
     }
 
@@ -180,13 +180,13 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
     }
 
     @Override
-    public void showRepositories(List<Repository> list) {
+    public void showRepositories(List<RepositoryData> list) {
         Logger.d(TAG, "showRepositories");
         mAdapter.addRespositories(list);
     }
 
     @Override
-    public void appendRepository(Repository repo) {
+    public void appendRepository(RepositoryData repo) {
         Logger.d(TAG, "appendRepository");
         mAdapter.addRespository(repo);
     }

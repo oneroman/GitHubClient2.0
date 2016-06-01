@@ -1,7 +1,9 @@
 package com.roman.github.GitHubAPI;
 
 import com.roman.github.GitHubAPI.pojo.Repository;
+import com.roman.github.data.RepositoryData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -19,22 +21,22 @@ public class RepositoriesManager {
         this.githubApi = githubApi;
     }
 
-    public Observable<Repository> getOneByOneUsersRepositories(String user) {
+    public Observable<RepositoryData> getOneByOneUsersRepositories(String user) {
         return githubApi.listRepositories(user)
-                /*.map(new Func1<List<RepositoryResponse>, ImmutableList<Repository>>() {
+                .map(new Func1<List<Repository>, List<RepositoryData>>() {
                     @Override
-                    public ImmutableList<Repository> call(List<RepositoryResponse> repositoriesListResponse) {
-                        final ImmutableList.Builder<Repository> listBuilder = ImmutableList.builder();
-                        for (RepositoryResponse repositoryResponse : repositoriesListResponse) {
-                            Repository repository = new Repository();
-                            listBuilder.add(repository);
+                    public List<RepositoryData> call(List<Repository> repositoriesListResponse) {
+                        final List<RepositoryData> list = new ArrayList<>(repositoriesListResponse.size());
+                        for (Repository repositoryResponse : repositoriesListResponse) {
+                            RepositoryData repository = new RepositoryData(repositoryResponse.name, repositoryResponse.description);
+                            list.add(repository);
                         }
-                        return listBuilder.build();
+                        return list;
                     }
-                })*/
-                .flatMap(new Func1<List<Repository>, Observable<Repository>>() {
+                })
+                .flatMap(new Func1<List<RepositoryData>, Observable<RepositoryData>>() {
                     @Override
-                    public Observable<Repository> call(List<Repository> repositories) {
+                    public Observable<RepositoryData> call(List<RepositoryData> repositories) {
                         return Observable.from(repositories);
                     }
                 })

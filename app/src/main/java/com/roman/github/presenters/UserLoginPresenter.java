@@ -2,7 +2,7 @@ package com.roman.github.presenters;
 
 import com.roman.github.GitHubAPI.GitHubAPI;
 import com.roman.github.GitHubAPI.UserinfoManager;
-import com.roman.github.GitHubAPI.pojo.Userinfo;
+import com.roman.github.data.UserInfoData;
 import com.roman.github.utils.Logger;
 import com.roman.github.utils.TextUtils;
 
@@ -52,7 +52,7 @@ public class UserLoginPresenter implements UserLogin.Presenter {
         mView.requestingUserinfo();
 
         mUserinfoManager = new UserinfoManager(mGitHub);
-        mUserinfoManager.getUserinfo(mUsername).subscribe(new Observer<Userinfo>() {
+        mUserinfoManager.getUserinfo(mUsername).subscribe(new Observer<UserInfoData>() {
             @Override
             public void onCompleted() {
                 Logger.d(TAG, "onCompleted");
@@ -65,7 +65,7 @@ public class UserLoginPresenter implements UserLogin.Presenter {
             }
 
             @Override
-            public void onNext(Userinfo userinfo) {
+            public void onNext(UserInfoData userinfo) {
                 Logger.d(TAG, "onNext [" + userinfo + "]");
                 mView.showUserinfo(userinfo);
             }

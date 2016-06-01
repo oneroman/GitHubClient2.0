@@ -2,7 +2,7 @@ package com.roman.github.presenters;
 
 import com.roman.github.GitHubAPI.GitHubAPI;
 import com.roman.github.GitHubAPI.RepositoriesManager;
-import com.roman.github.GitHubAPI.pojo.Repository;
+import com.roman.github.data.RepositoryData;
 import com.roman.github.utils.Logger;
 
 import rx.Observer;
@@ -38,7 +38,7 @@ public class RepositoriesListPresenter implements RepositoriesList.Presenter {
         Logger.d(TAG, "starts getRepositories for user [" + username + "]");
         mView.showLoading(true);
 
-        subscriptions.add(mRepositoriesManager.getOneByOneUsersRepositories(username).subscribe(new Observer<Repository>() {
+        subscriptions.add(mRepositoriesManager.getOneByOneUsersRepositories(username).subscribe(new Observer<RepositoryData>() {
             @Override
             public void onCompleted() {
                 Logger.d(TAG, "onCompleted");
@@ -52,7 +52,7 @@ public class RepositoriesListPresenter implements RepositoriesList.Presenter {
             }
 
             @Override
-            public void onNext(Repository repository) {
+            public void onNext(RepositoryData repository) {
                 Logger.d(TAG, "onNext, repository [" + repository + "]");
                 //lets hide as soon as got first item
                 mView.showLoading(false);

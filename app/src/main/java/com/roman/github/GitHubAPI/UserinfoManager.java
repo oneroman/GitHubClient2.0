@@ -1,9 +1,11 @@
 package com.roman.github.GitHubAPI;
 
 import com.roman.github.GitHubAPI.pojo.Userinfo;
+import com.roman.github.data.UserInfoData;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -17,8 +19,15 @@ public class UserinfoManager {
         this.githubApi = githubApi;
     }
 
-    public Observable<Userinfo> getUserinfo(String name) {
-        return githubApi.userInfo(name).subscribeOn(Schedulers.io())
+    public Observable<UserInfoData> getUserinfo(String name) {
+        return githubApi.userInfo(name)
+                .map(new Func1<Userinfo, UserInfoData>() {
+                    @Override
+                    public UserInfoData call(Userinfo userinfo) {
+                        return new UserInfoData(userinfo.login, userinfo.avatar_url);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }
