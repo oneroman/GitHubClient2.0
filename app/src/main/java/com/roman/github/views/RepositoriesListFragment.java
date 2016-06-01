@@ -101,7 +101,7 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        collapsing_toolbar.setTitle(mUserinfo == null ? getString(R.string.unknown_str) : mUserinfo.getLogin());
+        collapsing_toolbar.setTitle(mUserinfo == null ? getString(R.string.unknown_str) : (mUserinfo.getName() != null ? mUserinfo.getName() : mUserinfo.getLogin()));
 
         if(savedInstanceState == null/* && animate == true*/) {
             //animate = false;

@@ -21,6 +21,6 @@ abstract public class BaseFragment extends Fragment{
     protected abstract void setupDI();
 
     protected AppComponent getAppComponent() {
-        return ((MyApplication) getActivity().getApplication()).getAppComponent();
+        return MyApplication.getAppComponent(getContext());
     }
 }

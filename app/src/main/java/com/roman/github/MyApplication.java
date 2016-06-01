@@ -1,6 +1,7 @@
 package com.roman.github;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.roman.github.pool.ThreadPoolModule;
 
@@ -24,8 +25,8 @@ public class MyApplication extends Application {
 
     }
 
-    public AppComponent getAppComponent() {
-        return mRepositoriesListComponent;
+    public static AppComponent getAppComponent(Context context) {
+        return ((MyApplication) context.getApplicationContext()).mRepositoriesListComponent;
     }
 
 }

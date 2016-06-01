@@ -24,7 +24,7 @@ public class UserinfoManager {
                 .map(new Func1<Userinfo, UserInfoData>() {
                     @Override
                     public UserInfoData call(Userinfo userinfo) {
-                        return new UserInfoData(userinfo.login, userinfo.avatar_url);
+                        return new UserInfoData(userinfo.login, userinfo.name, userinfo.avatar_url);
                     }
                 })
                 .subscribeOn(Schedulers.io())
