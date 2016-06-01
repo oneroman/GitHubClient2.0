@@ -8,7 +8,7 @@ import com.roman.github.base.BaseActivity;
 import com.roman.github.utils.ActivityUtils;
 import com.roman.github.utils.Logger;
 import com.roman.github.views.BackKeyListener;
-import com.roman.github.views.UserLoginFragment;
+import com.roman.github.views.controllers.SplashFragment;
 
 public class LaunchActivity extends BaseActivity {
 
@@ -21,7 +21,7 @@ public class LaunchActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         if(savedInstanceState == null) {
-            Fragment fragment = new UserLoginFragment();
+            Fragment fragment = new SplashFragment();
             ActivityUtils.replaceFragment(getSupportFragmentManager(), fragment, getFragmentId(), null );
         }
     }

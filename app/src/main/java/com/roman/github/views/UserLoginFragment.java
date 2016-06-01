@@ -72,7 +72,9 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
 
     @Override
     protected void setupDI() {
+//        Debug.startMethodTracing("UserLoginFragmentTrace");
         getAppComponent().plus(new UserLoginModule(this)).inject(this);
+//        Debug.stopMethodTracing();
     }
 
     @Override
