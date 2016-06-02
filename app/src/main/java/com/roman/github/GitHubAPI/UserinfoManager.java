@@ -2,6 +2,7 @@ package com.roman.github.GitHubAPI;
 
 import com.roman.github.GitHubAPI.pojo.Userinfo;
 import com.roman.github.data.UserInfoData;
+import com.roman.github.data.converter.DataConverter;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -24,7 +25,7 @@ public class UserinfoManager {
                 .map(new Func1<Userinfo, UserInfoData>() {
                     @Override
                     public UserInfoData call(Userinfo userinfo) {
-                        return new UserInfoData(userinfo.login, userinfo.name, userinfo.avatar_url);
+                        return DataConverter.convert(userinfo);
                     }
                 })
                 .subscribeOn(Schedulers.io())

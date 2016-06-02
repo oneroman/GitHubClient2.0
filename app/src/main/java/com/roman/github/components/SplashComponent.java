@@ -2,7 +2,7 @@ package com.roman.github.components;
 
 import com.roman.github.FragmentScope;
 import com.roman.github.modules.SplashModule;
-import com.roman.github.views.controllers.SplashFragment;
+import com.roman.github.views.SplashFragment;
 
 import dagger.Subcomponent;
 

@@ -109,8 +109,8 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
             userName.setSelection(tmpName.length());
         }
 
-        subscriptions.add(RxTextView.textChangeEvents(userName).
-                observeOn(AndroidSchedulers.mainThread())
+        subscriptions.add(RxTextView.textChangeEvents(userName)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getUsernameObserver()));
 
         return view;
@@ -247,4 +247,5 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     public void onBackKey() {
         exitAnimation();
     }
+
 }

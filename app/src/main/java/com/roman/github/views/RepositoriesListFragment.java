@@ -28,6 +28,7 @@ import com.roman.github.adapters.RepositoryAdapter;
 import com.roman.github.base.BaseFragment;
 import com.roman.github.R;
 import com.roman.github.presenters.RepositoriesList;
+import com.roman.github.utils.ActivityUtils;
 import com.roman.github.utils.Logger;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -125,7 +126,7 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new RepositoryAdapter();
+        mAdapter = new RepositoryAdapter(mItemClickListener);
 
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(1000);
@@ -133,6 +134,14 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         recyclerView.setItemAnimator(itemAnimator);
         recyclerView.setAdapter(mAdapter);
     }
+
+    private RepositoryAdapter.OnItemClickListener mItemClickListener = new RepositoryAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(RepositoryData item) {
+            Logger.d(TAG, "onItemClick [" + item + "]");
+            ActivityUtils.replaceFragment(getActivity().getSupportFragmentManager(), RepositoryDetailFragment.newInstance(item), R.id.fragment_container, RepositoryDetailFragment.class.getName());
+        }
+    };
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

@@ -2,8 +2,8 @@ package com.roman.github.GitHubAPI;
 
 import com.roman.github.GitHubAPI.pojo.Repository;
 import com.roman.github.data.RepositoryData;
+import com.roman.github.data.converter.DataConverter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -26,12 +26,7 @@ public class RepositoriesManager {
                 .map(new Func1<List<Repository>, List<RepositoryData>>() {
                     @Override
                     public List<RepositoryData> call(List<Repository> repositoriesListResponse) {
-                        final List<RepositoryData> list = new ArrayList<>(repositoriesListResponse.size());
-                        for (Repository repositoryResponse : repositoriesListResponse) {
-                            RepositoryData repository = new RepositoryData(repositoryResponse.name, repositoryResponse.description);
-                            list.add(repository);
-                        }
-                        return list;
+                        return DataConverter.convert(repositoriesListResponse);
                     }
                 })
                 .flatMap(new Func1<List<RepositoryData>, Observable<RepositoryData>>() {
@@ -44,9 +39,16 @@ public class RepositoriesManager {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<List<Repository>> getAllUsersRepositories(String user) {
+    public Observable<List<RepositoryData>> getAllUsersRepositories(String user) {
         return githubApi.listRepositories(user)
                 .subscribeOn(Schedulers.io())
+                .map(new Func1<List<Repository>, List<RepositoryData>>() {
+                    @Override
+                    public List<RepositoryData> call(List<Repository> repositories) {
+                        return DataConverter.convert(repositories);
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
 }

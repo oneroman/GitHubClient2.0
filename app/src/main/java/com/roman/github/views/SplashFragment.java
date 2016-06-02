@@ -1,4 +1,4 @@
-package com.roman.github.views.controllers;
+package com.roman.github.views;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +11,6 @@ import com.roman.github.modules.SplashModule;
 import com.roman.github.presenters.Splash;
 import com.roman.github.utils.ActivityUtils;
 import com.roman.github.utils.Logger;
-import com.roman.github.views.UserLoginFragment;
 
 import javax.inject.Inject;
 

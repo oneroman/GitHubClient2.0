@@ -1,9 +1,11 @@
 package com.roman.github;
 
 import com.roman.github.components.RespositoriesListComponent;
+import com.roman.github.components.RespositoryDetailComponent;
 import com.roman.github.components.SplashComponent;
 import com.roman.github.components.UserLoginComponent;
 import com.roman.github.modules.RepositoriesListModule;
+import com.roman.github.modules.RepositoryDetailModule;
 import com.roman.github.modules.SplashModule;
 import com.roman.github.modules.UserLoginModule;
 import com.roman.github.pool.ThreadPoolModule;
@@ -19,8 +21,10 @@ import dagger.Component;
 @Component(modules={AppModule.class, ThreadPoolModule.class})
 public interface AppComponent {
     SplashComponent plus(SplashModule module);
-    RespositoriesListComponent plus(RepositoriesListModule module);
+
     UserLoginComponent plus(UserLoginModule module);
+    RespositoriesListComponent plus(RepositoriesListModule module);
+    RespositoryDetailComponent plus(RepositoryDetailModule module);
 
 
 }

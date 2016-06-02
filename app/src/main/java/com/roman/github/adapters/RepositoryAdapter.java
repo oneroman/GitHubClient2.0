@@ -24,6 +24,17 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Ho
 
     private List<RepositoryData> mData;
 
+    public interface OnItemClickListener {
+        void onItemClick(RepositoryData item);
+    }
+
+    private OnItemClickListener mListener;
+
+    public RepositoryAdapter(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
+
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
 //        Logger.d(TAG, "onCreateViewHolder, parent [" + parent + "], viewType [" + viewType + "]");
@@ -34,9 +45,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Ho
     @Override
     public void onBindViewHolder(Holder holder, int position) {
 //        Logger.d(TAG, "onBindViewHolder, holder [" + holder + "], position [" + position + "]");
-        RepositoryData item = mData.get(position);
-        holder.tx.setText(item.getName());
-        holder.description.setText(item.getDescription());
+        holder.bind(mData.get(position), mListener);
     }
 
     @Override
@@ -71,6 +80,19 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Ho
         public Holder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        void bind(final RepositoryData item, final OnItemClickListener listener) {
+            tx.setText(item.getName());
+            description.setText(item.getDescription());
+            if(listener != null) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(item);
+                    }
+                });
+            }
         }
     }
 }

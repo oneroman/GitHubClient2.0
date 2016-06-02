@@ -8,7 +8,7 @@ import com.roman.github.base.BaseActivity;
 import com.roman.github.utils.ActivityUtils;
 import com.roman.github.utils.Logger;
 import com.roman.github.views.BackKeyListener;
-import com.roman.github.views.controllers.SplashFragment;
+import com.roman.github.views.SplashFragment;
 
 public class LaunchActivity extends BaseActivity {
 
