@@ -8,4 +8,10 @@
     <color name="colorContentViewSeparatorCardView">#00BCD4</color>
 
     <color name="color_text_title">#00838F</color>
+
+    <color name="btn_default_light_normal">#00000000</color>
+    <color name="btn_default_light_pressed">#40ffffff</color>
+
+    <color name="list_item_background_focused">#0f000000</color>
+    <color name="list_item_background_pressed">#18000000</color>
 </resources>

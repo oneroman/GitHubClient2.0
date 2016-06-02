@@ -10,23 +10,35 @@ import com.roman.github.pool.ThreadPoolModule;
  */
 public class MyApplication extends Application {
 
+    private static MyApplication app;
     private AppComponent mRepositoriesListComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        app = this;
 
-        com.squareup.leakcanary.LeakCanary.install(this);
-
-        mRepositoriesListComponent = DaggerAppComponent.builder().
-                appModule(new AppModule(this))
-                .threadPoolModule(new ThreadPoolModule())
-                .build();
-
+        setupLeak();
+        setupAppComponent();
     }
 
     public static AppComponent getAppComponent(Context context) {
         return ((MyApplication) context.getApplicationContext()).mRepositoriesListComponent;
+    }
+
+    public static Context getAppContext() {
+        return app;
+    }
+
+    private void setupLeak() {
+        com.squareup.leakcanary.LeakCanary.install(this);
+    }
+
+    private void setupAppComponent() {
+        mRepositoriesListComponent = DaggerAppComponent.builder().
+                appModule(new AppModule(this))
+                .threadPoolModule(new ThreadPoolModule())
+                .build();
     }
 
 }

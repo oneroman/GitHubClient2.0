@@ -18,6 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider android:name=".contentprovider.UserSearchProvider" android:authorities="com.roman.github.UserSearchProvider" />
     </application>
 
 </manifest>

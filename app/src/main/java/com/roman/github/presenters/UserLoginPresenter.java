@@ -2,6 +2,8 @@ package com.roman.github.presenters;
 
 import com.roman.github.GitHubAPI.GitHubAPI;
 import com.roman.github.GitHubAPI.UserinfoManager;
+import com.roman.github.MyApplication;
+import com.roman.github.contentprovider.RecentSearchController;
 import com.roman.github.data.UserInfoData;
 import com.roman.github.utils.Logger;
 import com.roman.github.utils.TextUtils;
@@ -49,6 +51,7 @@ public class UserLoginPresenter implements UserLogin.Presenter {
         if(!validateUserName()) {
             return;
         }
+        RecentSearchController.remember(MyApplication.getAppContext(), mUsername);
         mView.requestingUserinfo();
 
         mUserinfoManager = new UserinfoManager(mGitHub);

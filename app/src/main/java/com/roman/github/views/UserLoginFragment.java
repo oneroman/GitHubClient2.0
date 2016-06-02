@@ -9,9 +9,14 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -81,6 +86,8 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Logger.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -248,4 +255,24 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
         exitAnimation();
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        Logger.d(TAG, "onCreateOptionsMenu");
+        inflater.inflate(R.menu.login_menu, menu);
+        MenuItem searchMenuItem = menu.findItem(R.id.search);
+//        searchMenuItem.setActionView(R.layout.menu_item_layout);
+//        SearchView searchView = (SearchView) searchMenuItem.getActionView();
+//        MenuItemCompat.getActionView(searchMenuItem);
+//        searchView.setIconifiedByDefault(false);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Logger.d(TAG, "onOptionsItemSelected, item [" + item + "]");
+        if(item.getItemId() == R.id.search) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
