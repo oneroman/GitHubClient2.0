@@ -4,13 +4,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.roman.github.R;
-import com.roman.github.base.BaseActivity;
+import com.roman.github.base.SearchableActivity;
 import com.roman.github.utils.ActivityUtils;
 import com.roman.github.utils.Logger;
 import com.roman.github.views.BackKeyListener;
 import com.roman.github.views.SplashFragment;
 
-public class LaunchActivity extends BaseActivity {
+public class LaunchActivity extends SearchableActivity {
 
     private static final String TAG = LaunchActivity.class.getSimpleName();
 

@@ -2,7 +2,10 @@ package com.roman.github.views;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -50,7 +53,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Anna on 27.05.2016.
  */
-public class UserLoginFragment extends BaseFragment implements UserLogin.View, BackKeyListener {
+public class UserLoginFragment extends BaseFragment implements UserLogin.View, BackKeyListener, SearchListener {
 
     private static final String TAG = UserLoginFragment.class.getSimpleName();
 
@@ -259,12 +262,18 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         Logger.d(TAG, "onCreateOptionsMenu");
         inflater.inflate(R.menu.login_menu, menu);
-        MenuItem searchMenuItem = menu.findItem(R.id.search);
-//        searchMenuItem.setActionView(R.layout.menu_item_layout);
-//        SearchView searchView = (SearchView) searchMenuItem.getActionView();
-//        MenuItemCompat.getActionView(searchMenuItem);
-//        searchView.setIconifiedByDefault(false);
+        mSearchMenuItem = menu.findItem(R.id.search);
+
+        setupSearch((SearchView) MenuItemCompat.getActionView(mSearchMenuItem));
+
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    MenuItem mSearchMenuItem;
+
+    private void setupSearch(SearchView searchView) {
+        SearchManager searchManager = (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
     }
 
     @Override
@@ -274,5 +283,37 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        Logger.d(TAG, "onAttach");
+        super.onAttach(activity);
+
+        setSearchActivityListener(activity, this);
+    }
+
+    private void setSearchActivityListener(Activity activity, SearchListener listener) {
+        if(activity instanceof SearchHolder) {
+            ((SearchHolder) activity).setSearchListener(listener);
+        } else {
+            new IllegalStateException("Fragment shall be used with Activity which implements [" + SearchHolder.class + "]");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        Logger.d(TAG, "onDetach");
+        super.onDetach();
+        setSearchActivityListener(getActivity(), null);
+    }
+
+    @Override
+    public void search(String txt) {
+        Logger.d(TAG, "search [" + txt + "]");
+        mSearchMenuItem.collapseActionView();
+
+        mPresenter.setUsername(txt);
+        mPresenter.validateUserinfo();
     }
 }
