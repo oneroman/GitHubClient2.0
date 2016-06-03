@@ -8,6 +8,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -17,6 +19,8 @@ public interface GitHubAPI {
 
     @GET("users/{user}/repos")
     Observable<List<Repository>> listRepositories(@Path("user") String user);
+    @GET("users/{user}/repos")
+    Observable<List<Repository>> listRepositories(@Path("user") String user, @Query("page") int page, @Query("per_page") int count);
 //    Call<List<Repository>> listRepositories(@Path("user") String user);
 
     @GET("users/{user}")

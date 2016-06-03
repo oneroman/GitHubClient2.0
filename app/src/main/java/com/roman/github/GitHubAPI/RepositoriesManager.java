@@ -16,13 +16,15 @@ import rx.schedulers.Schedulers;
  */
 public class RepositoriesManager {
     private GitHubAPI githubApi;
+    private int page_size;
 
-    public RepositoriesManager(GitHubAPI githubApi) {
+    public RepositoriesManager(GitHubAPI githubApi, int page_size) {
         this.githubApi = githubApi;
+        this.page_size = page_size;
     }
 
-    public Observable<RepositoryData> getOneByOneUsersRepositories(String user) {
-        return githubApi.listRepositories(user)
+    public Observable<RepositoryData> getOneByOneUsersRepositories(String user, int page) {
+        return githubApi.listRepositories(user, page, page_size)
                 .map(new Func1<List<Repository>, List<RepositoryData>>() {
                     @Override
                     public List<RepositoryData> call(List<Repository> repositoriesListResponse) {
@@ -39,8 +41,8 @@ public class RepositoriesManager {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<List<RepositoryData>> getAllUsersRepositories(String user) {
-        return githubApi.listRepositories(user)
+    public Observable<List<RepositoryData>> getAllUsersRepositories(String user, int page) {
+        return githubApi.listRepositories(user, page, page_size)
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<List<Repository>, List<RepositoryData>>() {
                     @Override

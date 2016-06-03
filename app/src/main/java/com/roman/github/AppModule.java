@@ -6,6 +6,7 @@ import com.jakewharton.picasso.OkHttp3Downloader;
 import com.roman.github.GitHubAPI.GitHubAPI;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
@@ -13,7 +14,11 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -48,12 +53,30 @@ public class AppModule {
             builder.addInterceptor(logging);
         }
 
+        addGitHubInterceptor(builder);
+
         Cache cache = new Cache(app.getCacheDir(), 2 * 1024 * 1024);//2 Mb
         builder.cache(cache);
 
         builder.connectTimeout(5, TimeUnit.SECONDS).readTimeout(5, TimeUnit.SECONDS);
 
         return builder.build();
+    }
+
+    private void addGitHubInterceptor(OkHttpClient.Builder builder) {
+        builder.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request request = chain.request();
+                HttpUrl url = request.url()
+                        .newBuilder()
+                        .addQueryParameter("client_id", app.getResources().getString(R.string.client_id))
+                        .addQueryParameter("client_secret", app.getResources().getString(R.string.client_secret))
+                        .build();
+                request = request.newBuilder().url(url).build();
+                return chain.proceed(request);
+            }
+        });
     }
 
     @Provides

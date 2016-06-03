@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">MyGitHub</string>
+    <string name="client_id">76c264275be270b94f24</string>
+    <string name="client_secret">0b23727481f30a079e5b54d2e71a0f8783457543</string>
 
     <string name="enter_username_hint">Enter User name</string>
     <string name="default_debug_username">oneroman</string>

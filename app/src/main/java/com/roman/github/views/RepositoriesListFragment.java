@@ -56,7 +56,7 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.list)
-    RecyclerView recyclerView;
+    PageRecyclerView recyclerView;
     private RepositoryAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -90,6 +90,7 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mUserinfo = getArguments().getParcelable(USERINFO);
+            mPresenter.setUserInfo(mUserinfo);
         }
         Logger.d(TAG, "onCreate, username [" + mUserinfo + "]");
     }
@@ -125,6 +126,13 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setListener(new PageRecyclerView.PageLoaderListener() {
+            @Override
+            public void onLoadNextPage() {
+                Logger.d(TAG, "onLoadNextPage");
+                requestRepositories();
+            }
+        });
 
         mAdapter = new RepositoryAdapter(mItemClickListener);
 
@@ -148,10 +156,16 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         Logger.d(TAG, "onCreateView");
         super.onViewCreated(view, savedInstanceState);
 
-        if(mUserinfo != null) {
-            mPresenter.getRepositories(mUserinfo.getLogin());
-            downloadImage(headerImage, mUserinfo.getAvatarUrl());
-        }
+        mPresenter.viewCreated();
+        requestImage();
+    }
+
+    private void requestRepositories() {
+        mPresenter.getRepositories();
+    }
+
+    private void requestImage() {
+        downloadImage(headerImage, mUserinfo.getAvatarUrl());
     }
 
     private void startInitAnimation() {
@@ -169,6 +183,13 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        recyclerView.setListener(null);
+        recyclerView = null;
+    }
+
+    @Override
     public void onDestroy() {
         Logger.d(TAG, "onDestroy");
         super.onDestroy();
@@ -177,18 +198,21 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
     @Override
     public void showLoading(boolean loading) {
         mProgressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
+        recyclerView.setLoading(loading);
     }
 
     @Override
-    public void showRepositories(List<RepositoryData> list) {
-        Logger.d(TAG, "showRepositories");
+    public void showRepositories(List<RepositoryData> list, boolean last) {
+        Logger.d(TAG, "showRepositories, last [" + last+ "]");
         mAdapter.addRespositories(list);
+        recyclerView.setLastPage(last);
     }
 
     @Override
-    public void appendRepository(RepositoryData repo) {
-        Logger.d(TAG, "appendRepository");
+    public void appendRepository(RepositoryData repo, boolean last) {
+        Logger.d(TAG, "appendRepository, last [" + last+ "]");
         mAdapter.addRespository(repo);
+        recyclerView.setLastPage(last);
     }
 
     private void downloadImage(final ImageView img, String url) {

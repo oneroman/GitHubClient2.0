@@ -9,7 +9,7 @@ import com.roman.github.views.SearchListener;
 /**
  * Created by roman on 16. 6. 3.
  */
-public class SearchableActivity extends BaseActivity implements SearchListener.SearchHolder {
+abstract public class SearchableActivity extends BaseActivity implements SearchListener.SearchHolder {
 
     private static final String TAG = SearchableActivity.class.getSimpleName();
 

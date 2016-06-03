@@ -3,6 +3,7 @@ package com.roman.github.presenters;
 import com.roman.github.base.BasePresenter;
 import com.roman.github.base.BaseView;
 import com.roman.github.data.RepositoryData;
+import com.roman.github.data.UserInfoData;
 
 import java.util.List;
 
@@ -13,12 +14,14 @@ public interface RepositoriesList {
 
     interface View extends BaseView {
         void showLoading(boolean loading);
-        void showRepositories(List<RepositoryData> repos);
-        void appendRepository(RepositoryData repo);
+        void showRepositories(List<RepositoryData> repos, boolean lastPage);
+        void appendRepository(RepositoryData repo, boolean lastPage);
     }
 
     interface Presenter extends BasePresenter<View> {
-        void getRepositories(String repositoryName);
+        void setUserInfo(UserInfoData user);
+        void viewCreated();
+        void getRepositories();
     }
 
 }
