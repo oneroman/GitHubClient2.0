@@ -22,7 +22,7 @@ public class LaunchActivity extends SearchableActivity {
 
         if(savedInstanceState == null) {
             Fragment fragment = new SplashFragment();
-            ActivityUtils.replaceFragment(getSupportFragmentManager(), fragment, getFragmentId(), null );
+            ActivityUtils.replaceFragment(getSupportFragmentManager(), fragment, getFragmentId(), null);
         }
     }
 

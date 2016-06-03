@@ -59,8 +59,7 @@ public class SplashFragment extends BaseFragment implements Splash.View {
 
     private void initialized() {
         Logger.d(TAG, "initialized");
-        ActivityUtils.removeFragment(getActivity().getSupportFragmentManager(), this);
-        ActivityUtils.replaceFragment(getActivity().getSupportFragmentManager(), new UserLoginFragment(), R.id.fragment_container, UserLoginFragment.class.getName());
+        ActivityUtils.replaceFragment(getActivity().getSupportFragmentManager(), new UserLoginFragment(), R.id.fragment_container, null);
     }
 
     private Observable<Object> getObservable(final SplashFragment fragment) {
