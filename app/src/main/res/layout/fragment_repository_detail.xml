@@ -19,15 +19,18 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
             android:theme="@style/ToolbarTheme" />
 
     <!-- content below -->
 
-        <RelativeLayout
-            xmlns:tools="http://schemas.android.com/tools"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+            <!--Your content-->
             <TextView
                 android:id="@+id/text_details"
                 android:layout_width="wrap_content"
@@ -36,7 +39,9 @@
                 android:layout_gravity="center"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true" />
-        </RelativeLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
