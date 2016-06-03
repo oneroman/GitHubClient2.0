@@ -46,6 +46,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
@@ -66,6 +67,9 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     @BindView(R.id.button_start)
     Button button_start;
 
+    private Unbinder unbinder;
+
+    private MenuItem mSearchMenuItem;
     private ProgressDialog mProgressDialog;
     private boolean animate = true;
 
@@ -97,7 +101,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.d(TAG, "onCreateView");
         final View view = inflater.inflate(R.layout.fragment_user_login, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -213,6 +217,10 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     public void onDestroyView() {
         Logger.d(TAG, "onDestroyView");
         super.onDestroyView();
+        //memory leaks
+        mSearchMenuItem = null;
+        hideProgress();
+        unbinder.unbind();unbinder = null;
         subscriptions.clear();
     }
 
@@ -224,8 +232,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
 
     @Override
     public void requestingUserinfo() {
-        mProgressDialog = ProgressDialog.show(getContext(), getResources().getString(R.string.dialog_title_request_userifo),
-                getResources().getString(R.string.please_wait), true);
+        mProgressDialog = ProgressDialog.show(getContext(), getResources().getString(R.string.dialog_title_request_userifo), getResources().getString(R.string.please_wait), true);
         mProgressDialog.show();
     }
 
@@ -233,6 +240,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
         if(mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
+        mProgressDialog = null;
     }
 
     @Override
@@ -268,8 +276,6 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
 
         super.onCreateOptionsMenu(menu, inflater);
     }
-
-    MenuItem mSearchMenuItem;
 
     private void setupSearch(SearchView searchView) {
         SearchManager searchManager = (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);

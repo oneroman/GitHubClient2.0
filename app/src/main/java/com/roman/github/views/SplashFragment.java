@@ -15,6 +15,7 @@ import com.roman.github.utils.Logger;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -24,6 +25,8 @@ import rx.schedulers.Schedulers;
 public class SplashFragment extends BaseFragment implements Splash.View {
 
     private static final String TAG = SplashFragment.class.getSimpleName();
+
+    private Unbinder unbinder;
 
     @Inject
     Splash.Presenter mPresenter;
@@ -52,7 +55,7 @@ public class SplashFragment extends BaseFragment implements Splash.View {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.d(TAG, "onCreateView");
         final View view = inflater.inflate(R.layout.fragment_splash, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         return view;
     }
@@ -78,4 +81,9 @@ public class SplashFragment extends BaseFragment implements Splash.View {
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();unbinder = null;
+    }
 }

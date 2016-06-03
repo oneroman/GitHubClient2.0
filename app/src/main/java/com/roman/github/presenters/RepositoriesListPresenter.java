@@ -21,9 +21,9 @@ public class RepositoriesListPresenter implements RepositoriesList.Presenter {
 
     private RepositoriesList.View mView;
 
-    GitHubAPI mGitHubApi;
+    private GitHubAPI mGitHubApi;
 
-    UserInfoData mUserInfo;
+    private UserInfoData mUserInfo;
 
     private CompositeSubscription subscriptions = new CompositeSubscription();
 
@@ -52,14 +52,19 @@ public class RepositoriesListPresenter implements RepositoriesList.Presenter {
     @Override
     public void viewCreated() {
         Logger.d(TAG, "viewCreated");
-        totalItemsAlreadyDownloaded = repositoryCache.get().size();
-        if(totalItemsAlreadyDownloaded == 0) {
+        if(repositoryCache.get() == null) {
             Logger.d(TAG, "viewCreated, dont have cache");
+            totalItemsAlreadyDownloaded = 0;
             getRepositories();
         } else {
             Logger.d(TAG, "viewCreated, cache is available");
+            totalItemsAlreadyDownloaded = repositoryCache.get().size();
             mView.showRepositories(repositoryCache.get(), false);
         }
+    }
+
+    private int getNextPage() {
+        return totalItemsAlreadyDownloaded == 0 ? 1 : totalItemsAlreadyDownloaded / PAGE_SIZE + 1;
     }
 
     @Override
@@ -67,16 +72,9 @@ public class RepositoriesListPresenter implements RepositoriesList.Presenter {
         if(mUserInfo == null) return;
 
         String user = mUserInfo.getLogin();
-        Logger.d(TAG, "starts getRepositories for user [" + user + "]");
-        int nextPage;
-        if(totalItemsAlreadyDownloaded == 0) {
-            nextPage = 1;
-        } else {
-            nextPage = totalItemsAlreadyDownloaded / PAGE_SIZE + 1;
-        }
+        int nextPage = getNextPage();
+        Logger.d(TAG, "starts getRepositories for user [" + user + "], nextPage [" + nextPage + "]");
         mView.showLoading(true);
-
-        Logger.d(TAG, "starts getRepositories page [" + nextPage + "]");
 
         subscriptions.add(mRepositoriesManager.getAllUsersRepositories(user, nextPage).subscribe(new Observer<List<RepositoryData>>() {
             @Override

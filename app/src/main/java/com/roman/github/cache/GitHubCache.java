@@ -9,13 +9,16 @@ import java.util.List;
  */
 public class GitHubCache<T extends Collection> {
 
-    List<T> cache = new LinkedList<>();
+    private List<T> cache;
 
     public GitHubCache() {
 
     }
 
     public void add(T t) {
+        if(cache == null) {
+            cache = new LinkedList<>();
+        }
         cache.addAll(t);
     }
 

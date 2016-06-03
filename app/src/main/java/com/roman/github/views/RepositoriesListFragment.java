@@ -39,6 +39,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Anna on 27.05.2016.
@@ -58,7 +59,6 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
     @BindView(R.id.list)
     PageRecyclerView recyclerView;
     private RepositoryAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
@@ -66,6 +66,8 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
     CollapsingToolbarLayout collapsing_toolbar;
     @BindView(R.id.header)
     ImageView headerImage;
+
+    private Unbinder unbinder;
 
     @Inject
     RepositoriesList.Presenter mPresenter;
@@ -99,7 +101,7 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.d(TAG, "onCreateView");
         final View view = inflater.inflate(R.layout.fragment_repositories_list, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -124,7 +126,7 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
 
     private void setList() {
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setListener(new PageRecyclerView.PageLoaderListener() {
             @Override
@@ -185,8 +187,9 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mAdapter = null;
         recyclerView.setListener(null);
-        recyclerView = null;
+        unbinder.unbind();unbinder = null;
     }
 
     @Override

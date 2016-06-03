@@ -20,6 +20,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Anna on 27.05.2016.
@@ -36,6 +37,8 @@ public class RepositoryDetailFragment extends BaseFragment implements Repository
     Toolbar toolbar;
     @BindView(R.id.text_details)
     TextView text_details;
+
+    private Unbinder unbinder;
 
     @Inject
     RepositoryDetail.Presenter mPresenter;
@@ -66,7 +69,7 @@ public class RepositoryDetailFragment extends BaseFragment implements Repository
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Logger.d(TAG, "onCreateView");
         final View view = inflater.inflate(R.layout.fragment_repository_detail, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -89,6 +92,12 @@ public class RepositoryDetailFragment extends BaseFragment implements Repository
         if(mRepository != null) {
 
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();unbinder = null;
     }
 
     @Override
