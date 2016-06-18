@@ -18,6 +18,8 @@ public class MyApplication extends Application {
         super.onCreate();
         app = this;
 
+        fixCanaryLeaks();
+
         setupLeak();
         setupAppComponent();
     }
@@ -39,6 +41,20 @@ public class MyApplication extends Application {
                 appModule(new AppModule(this))
                 .threadPoolModule(new ThreadPoolModule())
                 .build();
+    }
+
+    private void fixCanaryLeaks() {
+        fixClipboardUIManager();
+    }
+
+    private void fixClipboardUIManager() {
+        if("samsung".equalsIgnoreCase(android.os.Build.MANUFACTURER)) {
+            try {
+                Class<?> cls = Class.forName("android.sec.clipboard.ClipboardUIManager");
+                java.lang.reflect.Method m = cls.getDeclaredMethod("getInstance", Context.class);
+                m.invoke(null, this);
+            } catch (Exception ignored) { }
+        }
     }
 
 }
