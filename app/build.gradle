@@ -39,6 +39,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 
+    apt 'com.squareup:javapoet:1.7.0'
     //Dagger 2
     apt 'com.google.dagger:dagger-compiler:2.2'
 
