@@ -11,7 +11,7 @@ import com.roman.github.pool.ThreadPoolModule;
 public class MyApplication extends Application {
 
     private static MyApplication app;
-    private AppComponent mRepositoriesListComponent;
+    private AppComponent mAppComponent;
 
     @Override
     public void onCreate() {
@@ -25,7 +25,7 @@ public class MyApplication extends Application {
     }
 
     public static AppComponent getAppComponent(Context context) {
-        return ((MyApplication) context.getApplicationContext()).mRepositoriesListComponent;
+        return ((MyApplication) context.getApplicationContext()).mAppComponent;
     }
 
     public static Context getAppContext() {
@@ -37,7 +37,7 @@ public class MyApplication extends Application {
     }
 
     private void setupAppComponent() {
-        mRepositoriesListComponent = DaggerAppComponent.builder().
+        mAppComponent = DaggerAppComponent.builder().
                 appModule(new AppModule(this))
                 .threadPoolModule(new ThreadPoolModule())
                 .build();
