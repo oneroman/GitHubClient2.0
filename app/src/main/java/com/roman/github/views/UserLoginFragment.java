@@ -103,7 +103,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
         final View view = inflater.inflate(R.layout.fragment_user_login, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        setActionBar();
 
         if(savedInstanceState == null && animate == true) {
             animate = false;
@@ -128,6 +128,10 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
                 .subscribe(getUsernameObserver()));
 
         return view;
+    }
+
+    private void setActionBar() {
+        showToolBarBackButton(toolbar);
     }
 
     private void startInitAnimation() {
@@ -263,6 +267,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
 
     @Override
     public void onBackKey() {
+        Logger.d(TAG, "onBackKey");
         exitAnimation();
     }
 

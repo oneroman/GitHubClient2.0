@@ -44,7 +44,7 @@ import butterknife.Unbinder;
 /**
  * Created by Anna on 27.05.2016.
  */
-public class RepositoriesListFragment extends BaseFragment implements RepositoriesList.View {
+public class RepositoriesListFragment extends BaseFragment implements BackKeyListener, RepositoriesList.View {
 
     private static final String TAG = RepositoriesListFragment.class.getSimpleName();
 
@@ -103,7 +103,7 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         final View view = inflater.inflate(R.layout.fragment_repositories_list, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        setActionBar();
 
         collapsing_toolbar.setTitle(mUserinfo == null ? getString(R.string.unknown_str) : (mUserinfo.getName() != null ? mUserinfo.getName() : mUserinfo.getLogin()));
 
@@ -122,6 +122,10 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         setList();
 
         return view;
+    }
+
+    private void setActionBar() {
+        showToolBarBackButton(toolbar);
     }
 
     private void setList() {
@@ -266,4 +270,8 @@ public class RepositoriesListFragment extends BaseFragment implements Repositori
         }
     }
 
+    @Override
+    public void onBackKey() {
+        Logger.d(TAG, "onBackKey");
+    }
 }

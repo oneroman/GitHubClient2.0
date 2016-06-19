@@ -25,7 +25,7 @@ import butterknife.Unbinder;
 /**
  * Created by Anna on 27.05.2016.
  */
-public class RepositoryDetailFragment extends BaseFragment implements RepositoryDetail.View {
+public class RepositoryDetailFragment extends BaseFragment implements BackKeyListener, RepositoryDetail.View {
 
     private static final String TAG = RepositoryDetailFragment.class.getSimpleName();
 
@@ -71,7 +71,7 @@ public class RepositoryDetailFragment extends BaseFragment implements Repository
         final View view = inflater.inflate(R.layout.fragment_repository_detail, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        setActionBar();
 
         /*collapsing_toolbar.setTitle(mUserinfo == null ? getString(R.string.unknown_str) : (mUserinfo.getName() != null ? mUserinfo.getName() : mUserinfo.getLogin()));
 
@@ -82,6 +82,10 @@ public class RepositoryDetailFragment extends BaseFragment implements Repository
         text_details.setText(mRepository.getDescription());
 
         return view;
+    }
+
+    private void setActionBar() {
+        showToolBarBackButton(toolbar);
     }
 
     @Override
@@ -106,4 +110,8 @@ public class RepositoryDetailFragment extends BaseFragment implements Repository
         super.onDestroy();
     }
 
+    @Override
+    public void onBackKey() {
+        Logger.d(TAG, "onBackKey");
+    }
 }
