@@ -84,7 +84,11 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Ho
 
         void bind(final RepositoryData item, final OnItemClickListener listener) {
             tx.setText(item.getName());
-            description.setText(item.getDescription());
+            if(item.getDescription() == null || item.getDescription().isEmpty()) {
+                description.setText(R.string.description_absent);
+            } else {
+                description.setText(item.getDescription());
+            }
             if(listener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

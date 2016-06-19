@@ -4,7 +4,7 @@
     <string name="client_secret">0b23727481f30a079e5b54d2e71a0f8783457543</string>
 
     <string name="enter_username_hint">Enter User name</string>
-    <string name="default_debug_username">oneroman</string>
+    <string name="default_debug_username">google</string>
     <string name="start_button_text">Start</string>
     <string name="username_empty_error">User name could not be empty</string>
     <string name="dialog_title_request_userifo">Verifying user information...</string>
@@ -12,5 +12,12 @@
     <string name="error_user_does_not_exist">Please check your information</string>
     <string name="unknown_str">Unknown</string>
     <string name="menu_search">Search</string>
+
+    <string name="description_absent">There is no description</string>
+    <string name="description_home_page">Home Page: %s</string>
+    <string name="description_language">Language: %s</string>
+    <string name="description_size">Size: %s</string>
+    <string name="description_open_issues">Open Issues: %s</string>
+    <string name="description_forks_count">Forks Count: %s</string>
 
 </resources>

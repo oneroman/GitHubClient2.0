@@ -2,7 +2,6 @@ package com.roman.github.views;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +36,16 @@ public class RepositoryDetailFragment extends BaseFragment implements BackKeyLis
     Toolbar toolbar;
     @BindView(R.id.text_details)
     TextView text_details;
+    @BindView(R.id.text_home_page)
+    TextView homePage;
+    @BindView(R.id.language)
+    TextView language;
+    @BindView(R.id.size)
+    TextView size;
+    @BindView(R.id.open_issues)
+    TextView openIssues;
+    @BindView(R.id.forks_count)
+    TextView forksCount;
 
     private Unbinder unbinder;
 
@@ -79,7 +88,22 @@ public class RepositoryDetailFragment extends BaseFragment implements BackKeyLis
         setList();*/
 
         toolbar.setTitle(mRepository.getName());
-        text_details.setText(mRepository.getDescription());
+        if(mRepository.getDescription() == null || mRepository.getDescription().isEmpty()) {
+            text_details.setText(R.string.description_absent);
+        } else {
+            text_details.setText(mRepository.getDescription());
+        }
+
+        String hp = mRepository.getHomePage();
+        homePage.setVisibility(hp == null || hp.isEmpty() ? View.GONE : View.VISIBLE);
+        homePage.setText(String.format(getResources().getString(R.string.description_home_page),hp));
+
+        language.setText(String.format(getResources().getString(R.string.description_language), mRepository.getLanguage()));
+
+        size.setText(String.format(getResources().getString(R.string.description_size), mRepository.getSize()));
+
+        openIssues.setText(String.format(getResources().getString(R.string.description_open_issues), mRepository.getOpenIssues()));
+        forksCount.setText(String.format(getResources().getString(R.string.description_forks_count), mRepository.getForksCount()));
 
         return view;
     }

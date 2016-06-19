@@ -29,7 +29,7 @@ final public class DataConverter {
         if(repository == null) {
             return null;
         }
-        return new RepositoryData(repository.name, repository.description);
+        return new RepositoryData(repository.name, repository.description, repository.homepage, repository.size, repository.language, repository.open_issues_count, repository.forks_count);
     }
 
     public static UserInfoData convert(Userinfo user) {

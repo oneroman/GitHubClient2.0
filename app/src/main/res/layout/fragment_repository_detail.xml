@@ -32,29 +32,100 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <!--Your content-->
-
-            <android.support.v7.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                card_view:cardBackgroundColor="@color/colorCardView"
-
-                card_view:cardCornerRadius="@dimen/card_radius"
-                card_view:cardElevation="1dp"
-                card_view:cardUseCompatPadding="true"
-                card_view:contentPadding="4dp"
-                android:foreground="@drawable/card_foreground" >
-
-                <TextView
-                    android:id="@+id/text_details"
-                    android:layout_width="wrap_content"
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="DETAILS"
-                    android:layout_gravity="center"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
-                    />
-            </android.support.v7.widget.CardView>
+
+                    card_view:cardBackgroundColor="@color/colorCardView"
+
+                    card_view:cardCornerRadius="@dimen/card_radius"
+                    card_view:cardElevation="1dp"
+                    card_view:cardUseCompatPadding="true"
+                    card_view:contentPadding="4dp"
+                    android:foreground="@drawable/card_foreground" >
+
+                    <TextView
+                        android:id="@+id/text_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DETAILS"
+                        android:layout_gravity="center"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true" />
+                        />
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    card_view:cardBackgroundColor="@color/colorContentViewSeparatorCardView"
+
+                    card_view:cardCornerRadius="@dimen/card_radius"
+                    card_view:cardElevation="1dp"
+                    card_view:cardUseCompatPadding="true"
+                    card_view:contentPadding="4dp"
+                    android:foreground="@drawable/card_foreground" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/text_home_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/description_home_page"
+                            android:autoLink="web"
+                            android:layout_gravity="start"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true" />
+
+                        <TextView
+                            android:id="@+id/language"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/description_language"
+                            android:layout_gravity="start"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true" />
+
+                        <TextView
+                            android:id="@+id/size"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/description_size"
+                            android:layout_gravity="start"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true" />
+
+                        <TextView
+                            android:id="@+id/open_issues"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/description_open_issues"
+                            android:layout_gravity="start"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true" />
+
+                        <TextView
+                            android:id="@+id/forks_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/description_forks_count"
+                            android:layout_gravity="start"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true" />
+                        />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
 
