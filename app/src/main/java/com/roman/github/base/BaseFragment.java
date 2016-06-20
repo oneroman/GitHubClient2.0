@@ -32,9 +32,15 @@ abstract public class BaseFragment extends Fragment{
         return MyApplication.getAppComponent(getContext());
     }
 
-    protected void showToolBarBackButton(Toolbar toolbar) {
+    protected void setToolBar(Toolbar toolbar) {
         if(toolbar != null) {
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        }
+    }
+
+    protected void showToolBarBackButton(Toolbar toolbar) {
+        if(toolbar != null) {
+            setToolBar(toolbar);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 

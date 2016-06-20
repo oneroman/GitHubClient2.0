@@ -14,6 +14,7 @@
     <string name="unknown_str">Unknown</string>
     <string name="menu_search">Search</string>
 
+    <!-- Description Fragment -->
     <string name="description_absent">There is no description</string>
     <string name="description_home_page">Home Page: %s</string>
     <string name="description_language">Language: %s</string>
@@ -21,4 +22,15 @@
     <string name="description_open_issues">Open Issues: %s</string>
     <string name="description_forks_count">Forks Count: %s</string>
 
+    <!-- Drawer menu -->
+    <string name="drawer_developer_mode">You are in developer mode, which does not work for user apk</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <!-- Drawer menu :: Developer mode -->
+    <string name="drawer_menu_first">First menu</string>
+    <string name="drawer_menu_view_repositories">View Repositories:</string>
+    <string name="drawer_menu_view_repositories_list_view">List View</string>
+    <string name="drawer_menu_view_repositories_grid_view">Grid View</string>
+    <string name="drawer_menu_logging">Logging</string>
 </resources>

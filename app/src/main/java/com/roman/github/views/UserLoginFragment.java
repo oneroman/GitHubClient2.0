@@ -9,10 +9,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -57,6 +60,10 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
 
     private static final String TAG = UserLoginFragment.class.getSimpleName();
 
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+    @BindView(R.id.nvView)
+    NavigationView navigationView;
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.toolbar)
@@ -67,6 +74,8 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     TextInputLayout username_layout;
     @BindView(R.id.button_start)
     Button button_start;
+
+    private ActionBarDrawerToggle mDrawerToggle;
 
     private Unbinder unbinder;
 
@@ -106,6 +115,13 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
 
         setActionBar();
 
+        mDrawerToggle = setupDrawerToggle();
+        setupDrawerContent(navigationView);
+        final boolean enableDrawerMenu = BuildConfig.DEBUG;
+        mDrawerToggle.setDrawerIndicatorEnabled(enableDrawerMenu);
+        drawerLayout.setDrawerLockMode(enableDrawerMenu ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        mDrawerToggle.syncState();
+
         if(savedInstanceState == null && animate == true) {
             animate = false;
             view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -132,7 +148,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     }
 
     private void setActionBar() {
-        showToolBarBackButton(toolbar);
+        setToolBar(toolbar);
     }
 
     private void startInitAnimation() {
@@ -216,6 +232,37 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     @Override
     public void wrongUsername() {
         username_layout.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.shake_error));
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(getActivity(), drawerLayout, toolbar, R.string.drawer_open,  R.string.drawer_close);
+    }
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    private void selectDrawerItem(MenuItem menuItem) {
+        Logger.d(TAG, "selectDrawerItem [" + menuItem + "]");
+
+        switch(menuItem.getItemId()) {
+            case R.id.nav_first_fragment:
+                break;
+            case R.id.nav_repository_list:
+                break;
+            case R.id.nav_repository_grid:
+                break;
+        }
+
+        menuItem.setChecked(false);
+        drawerLayout.closeDrawers();
     }
 
     @Override
@@ -335,4 +382,5 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
         mPresenter.setUsername(txt);
         mPresenter.validateUserinfo();
     }
+
 }
