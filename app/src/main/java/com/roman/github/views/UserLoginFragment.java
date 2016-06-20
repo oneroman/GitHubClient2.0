@@ -13,7 +13,6 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -58,6 +57,8 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
 
     private static final String TAG = UserLoginFragment.class.getSimpleName();
 
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.userName)
@@ -218,6 +219,13 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     }
 
     @Override
+    public void noInternetConnection() {
+        Logger.d(TAG, "noInternetConnection");
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.error_internet_not_available, Snackbar.LENGTH_LONG);
+        snackbar.show();
+    }
+
+    @Override
     public void onDestroyView() {
         Logger.d(TAG, "onDestroyView");
         super.onDestroyView();
@@ -260,7 +268,7 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
     }
 
     private void showWrongUserInfo() {
-        CoordinatorLayout coordinatorLayout = ButterKnife.findById(getActivity(), R.id.coordinatorLayout);
+        Logger.d(TAG, "showWrongUserInfo");
         Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.error_user_does_not_exist, Snackbar.LENGTH_LONG);
         snackbar.show();
     }

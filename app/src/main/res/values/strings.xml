@@ -10,6 +10,7 @@
     <string name="dialog_title_request_userifo">Verifying user information...</string>
     <string name="please_wait">Please wait</string>
     <string name="error_user_does_not_exist">Please check your information</string>
+    <string name="error_internet_not_available">Please check your Internet connection</string>
     <string name="unknown_str">Unknown</string>
     <string name="menu_search">Search</string>
 

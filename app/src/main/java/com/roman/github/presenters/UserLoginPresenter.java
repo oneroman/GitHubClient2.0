@@ -6,6 +6,7 @@ import com.roman.github.MyApplication;
 import com.roman.github.contentprovider.RecentSearchController;
 import com.roman.github.data.UserInfoData;
 import com.roman.github.utils.Logger;
+import com.roman.github.utils.NetworkUtils;
 import com.roman.github.utils.TextUtils;
 
 import rx.Observer;
@@ -45,12 +46,31 @@ public class UserLoginPresenter implements UserLogin.Presenter {
         return correct;
     }
 
+    private boolean validateInternet() {
+        final boolean correct = NetworkUtils.isInternetAvailable(MyApplication.getAppContext());
+        if(!correct) {
+            mView.noInternetConnection();
+        }
+        return correct;
+    }
+
+    private boolean validate() {
+        if(!validateUserName()) {
+            return false;
+        }
+        if(!validateInternet()) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public void validateUserinfo() {
         Logger.d(TAG, "validateUserinfo");
-        if(!validateUserName()) {
+        if(!validate()) {
             return;
         }
+
         RecentSearchController.remember(MyApplication.getAppContext(), mUsername);
         mView.requestingUserinfo();
 

@@ -13,6 +13,7 @@ public interface UserLogin {
         void requestingUserinfo();
         void showUserinfo(UserInfoData userinfo);
         void wrongUsername();
+        void noInternetConnection();
     }
 
     interface Presenter extends BasePresenter<View> {
