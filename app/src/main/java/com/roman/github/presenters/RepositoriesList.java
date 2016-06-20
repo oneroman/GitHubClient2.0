@@ -22,6 +22,8 @@ public interface RepositoriesList {
         void setUserInfo(UserInfoData user);
         void viewCreated();
         void getRepositories();
+        void destroyView();
+        void destroy();
     }
 
 }

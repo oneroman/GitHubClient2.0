@@ -190,9 +190,11 @@ public class RepositoriesListFragment extends BaseFragment implements BackKeyLis
 
     @Override
     public void onDestroyView() {
+        Logger.d(TAG, "onDestroyView");
         super.onDestroyView();
         mAdapter = null;
         recyclerView.setListener(null);
+        mPresenter.destroyView();
         unbinder.unbind();unbinder = null;
     }
 
@@ -200,6 +202,7 @@ public class RepositoriesListFragment extends BaseFragment implements BackKeyLis
     public void onDestroy() {
         Logger.d(TAG, "onDestroy");
         super.onDestroy();
+        mPresenter.destroy();
     }
 
     @Override

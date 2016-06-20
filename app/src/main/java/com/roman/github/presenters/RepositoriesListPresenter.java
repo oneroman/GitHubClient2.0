@@ -102,9 +102,14 @@ public class RepositoriesListPresenter implements RepositoriesList.Presenter {
         Logger.d(TAG, "ends getRepositories");
     }
 
+    public void destroyView() {
+        Logger.d(TAG, "destroyView");
+        subscriptions.clear();
+    }
+
     public void destroy() {
         Logger.d(TAG, "destroy");
-        subscriptions.clear();
+        destroyView();
         repositoryCache.clear();
     }
 
