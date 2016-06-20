@@ -3,6 +3,8 @@ package com.roman.github;
 import android.app.Application;
 import android.content.Context;
 
+import com.roman.github.leakcanary.DisableLogger;
+import com.roman.github.leakcanary.EnableLogger;
 import com.roman.github.pool.ThreadPoolModule;
 
 /**
@@ -34,6 +36,7 @@ public class MyApplication extends Application {
 
     private void setupLeak() {
         com.squareup.leakcanary.LeakCanary.install(this);
+        com.squareup.leakcanary.CanaryLog.setLogger(BuildConfig.DEBUG ? new EnableLogger() : new DisableLogger());
     }
 
     private void setupAppComponent() {

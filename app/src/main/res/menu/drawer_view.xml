@@ -27,7 +27,7 @@
             </item>
         <item
             android:id="@+id/nav_logging_menu"
-            
+
             android:title="@string/drawer_menu_logging" />
     </group>
 </menu>
