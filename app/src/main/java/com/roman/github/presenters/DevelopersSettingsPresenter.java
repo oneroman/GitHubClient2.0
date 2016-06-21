@@ -76,6 +76,12 @@ public class DevelopersSettingsPresenter implements DevSettings.Presenter {
     }
 
     @Override
+    public void destroy() {
+        Logger.d(TAG, "destroy");
+        mapRepositoryView.clear();
+    }
+
+    @Override
     public void start() {
 
     }

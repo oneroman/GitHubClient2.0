@@ -271,6 +271,8 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
         hideProgress();
         unbinder.unbind();unbinder = null;
         subscriptions.clear();
+        mDevSettingsPresenter.destroy();
+        mDevSettingsPresenter = null;
     }
 
     @Override

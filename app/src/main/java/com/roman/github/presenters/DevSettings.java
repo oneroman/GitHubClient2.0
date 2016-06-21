@@ -20,5 +20,7 @@ public class DevSettings {
         void init(Menu menu);
 
         void select(MenuItem menuItem);
+
+        void destroy();
     }
 }
