@@ -10,8 +10,10 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ import com.roman.github.adapters.RepositoryAdapter;
 import com.roman.github.base.BaseFragment;
 import com.roman.github.R;
 import com.roman.github.presenters.RepositoriesList;
+import com.roman.github.settings.DevelopersSettings;
 import com.roman.github.utils.ActivityUtils;
 import com.roman.github.utils.Logger;
 import com.squareup.picasso.Callback;
@@ -73,6 +76,8 @@ public class RepositoriesListFragment extends BaseFragment implements BackKeyLis
     RepositoriesList.Presenter mPresenter;
     @Inject
     Picasso mPicasso;
+    @Inject
+    DevelopersSettings mDeveloperSettings;
 
     @Override
     protected void setupDI() {
@@ -130,8 +135,7 @@ public class RepositoriesListFragment extends BaseFragment implements BackKeyLis
 
     private void setList() {
         // use a linear layout manager
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setLayoutManager(getRecyclerLayout());
         recyclerView.setListener(new PageRecyclerView.PageLoaderListener() {
             @Override
             public void onLoadNextPage() {
@@ -270,6 +274,17 @@ public class RepositoriesListFragment extends BaseFragment implements BackKeyLis
                     collapsing_toolbar.setExpandedTitleColor(colorDarkMutedInt);
                 }
             });
+        }
+    }
+
+    private RecyclerView.LayoutManager getRecyclerLayout() {
+        switch(mDeveloperSettings.getViewRepository()){
+            case STAGGERED_GRID_VIEW:
+                return new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            case GRID_VIEW:
+                return new GridLayoutManager(getContext(), 2);
+            default:
+                return new LinearLayoutManager(getContext());
         }
     }
 

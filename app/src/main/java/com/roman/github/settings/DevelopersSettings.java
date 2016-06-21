@@ -45,6 +45,12 @@ public class DevelopersSettings {
             public void save() {
                 GRID_VIEW.internalStore();
             }
+        },
+        STAGGERED_GRID_VIEW(3) {
+            @Override
+            public void save() {
+                STAGGERED_GRID_VIEW.internalStore();
+            }
         };
 
         private final int setting;
@@ -69,12 +75,14 @@ public class DevelopersSettings {
 
         public static ViewRepositories valueOf(int value) {
             switch(value){
+                case 3:  return STAGGERED_GRID_VIEW;
                 case 2:  return GRID_VIEW;
                 default: return LIST_VIEW;
             }
         }
 
         private void internalStore() {
+            Logger.d(TAG, "internalStore, setting [" + setting + "]");
             SharedPreferences.Editor editor = pref.edit();
             editor.putInt(filename, setting);
             editor.apply();

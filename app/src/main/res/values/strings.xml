@@ -32,6 +32,7 @@
     <string name="drawer_menu_view_repositories">View Repositories:</string>
     <string name="drawer_menu_view_repositories_list_view">List View</string>
     <string name="drawer_menu_view_repositories_grid_view">Grid View</string>
+    <string name="drawer_menu_view_repositories_staggered_grid_view">Staggered Grid View</string>
     <string name="drawer_menu_logging">Logging</string>
     <string name="drawer_menu_logging_app">App</string>
     <string name="drawer_menu_logging_leakcanary">LeakCanary</string>

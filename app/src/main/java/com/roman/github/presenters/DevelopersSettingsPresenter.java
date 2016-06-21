@@ -42,6 +42,9 @@ public class DevelopersSettingsPresenter implements DevSettings.Presenter {
 
         RepositoryViewItem  mRepositoryViewGridItem = new RepositoryViewItem(menu.findItem(R.id.nav_repository_grid), DevelopersSettings.ViewRepositories.GRID_VIEW);
         mapRepositoryView.put(mRepositoryViewGridItem.getMenuItem().getItemId(), mRepositoryViewGridItem);
+
+        RepositoryViewItem  mRepositoryViewStaggeredGridItem = new RepositoryViewItem(menu.findItem(R.id.nav_repository_staggered_grid), DevelopersSettings.ViewRepositories.STAGGERED_GRID_VIEW);
+        mapRepositoryView.put(mRepositoryViewStaggeredGridItem.getMenuItem().getItemId(), mRepositoryViewStaggeredGridItem);
         updateRepositorySetting();
 
         //2. init Loggers menus
@@ -69,6 +72,7 @@ public class DevelopersSettingsPresenter implements DevSettings.Presenter {
                 break;
             case R.id.nav_repository_list:
             case R.id.nav_repository_grid:
+            case R.id.nav_repository_staggered_grid:
                 mapRepositoryView.get(menuItem.getItemId()).pressed();
                 updateRepositorySetting();
                 break;
