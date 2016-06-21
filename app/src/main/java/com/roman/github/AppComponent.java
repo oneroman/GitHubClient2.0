@@ -6,6 +6,7 @@ import com.roman.github.components.SplashComponent;
 import com.roman.github.components.UserLoginComponent;
 import com.roman.github.modules.RepositoriesListModule;
 import com.roman.github.modules.RepositoryDetailModule;
+import com.roman.github.modules.SettingsModule;
 import com.roman.github.modules.SplashModule;
 import com.roman.github.modules.UserLoginModule;
 import com.roman.github.pool.ThreadPoolModule;
@@ -18,7 +19,7 @@ import dagger.Component;
  * Created by Anna on 27.05.2016.
  */
 @Singleton
-@Component(modules={AppModule.class, ThreadPoolModule.class})
+@Component(modules={AppModule.class, ThreadPoolModule.class, SettingsModule.class})
 public interface AppComponent {
     SplashComponent plus(SplashModule module);
 

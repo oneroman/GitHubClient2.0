@@ -5,7 +5,12 @@ import android.content.Context;
 
 import com.roman.github.leakcanary.DisableLogger;
 import com.roman.github.leakcanary.EnableLogger;
+import com.roman.github.modules.SettingsModule;
 import com.roman.github.pool.ThreadPoolModule;
+import com.roman.github.presenters.DevSettings;
+import com.roman.github.settings.DevelopersSettings;
+
+import javax.inject.Inject;
 
 /**
  * Created by roman on 16. 5. 27.
@@ -43,6 +48,7 @@ public class MyApplication extends Application {
         mAppComponent = DaggerAppComponent.builder().
                 appModule(new AppModule(this))
                 .threadPoolModule(new ThreadPoolModule())
+                .settingsModule(new SettingsModule(this))
                 .build();
     }
 

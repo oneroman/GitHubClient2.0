@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/menu_switch"
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/menu_checkbox"
         android:layout_width="fill_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

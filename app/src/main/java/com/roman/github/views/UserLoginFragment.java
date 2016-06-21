@@ -37,6 +37,7 @@ import com.roman.github.R;
 import com.roman.github.data.UserInfoData;
 import com.roman.github.modules.UserLoginModule;
 import com.roman.github.base.BaseFragment;
+import com.roman.github.presenters.DevSettings;
 import com.roman.github.presenters.UserLogin;
 import com.roman.github.utils.ActivityUtils;
 import com.roman.github.utils.Logger;
@@ -85,6 +86,8 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
 
     @Inject
     UserLogin.Presenter mPresenter;
+    @Inject
+    DevSettings.Presenter mDevSettingsPresenter;
 
     private CompositeSubscription subscriptions = new CompositeSubscription();
 
@@ -243,26 +246,13 @@ public class UserLoginFragment extends BaseFragment implements UserLogin.View, B
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
+                        mDevSettingsPresenter.select(menuItem);
                         return true;
                     }
                 });
-    }
 
-    private void selectDrawerItem(MenuItem menuItem) {
-        Logger.d(TAG, "selectDrawerItem [" + menuItem + "]");
+        mDevSettingsPresenter.init(navigationView.getMenu());
 
-        switch(menuItem.getItemId()) {
-            case R.id.nav_first_fragment:
-                break;
-            case R.id.nav_repository_list:
-                break;
-            case R.id.nav_repository_grid:
-                break;
-        }
-
-        menuItem.setChecked(false);
-        drawerLayout.closeDrawers();
     }
 
     @Override

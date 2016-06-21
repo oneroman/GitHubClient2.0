@@ -3,15 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="none">
         <item
-            android:id="@+id/nav_first_fragment"
+            android:id="@+id/nav_first_menu"
             app:actionLayout="@layout/action_view_switch"
 
             android:title="@string/drawer_menu_first" />
-        <item
-            android:title="@string/drawer_menu_view_repositories"
-            >
+        <item android:title="@string/drawer_menu_view_repositories">
                 <menu>
                     <group android:checkableBehavior="single">
                         <item
@@ -26,8 +24,26 @@
                 </menu>
             </item>
         <item
-            android:id="@+id/nav_logging_menu"
-
-            android:title="@string/drawer_menu_logging" />
+            android:title="@string/drawer_menu_logging">
+            <menu>
+                <group android:checkableBehavior="none">
+                    <item
+                        android:id="@+id/nav_logging_app"
+                        android:icon="@mipmap/ic_launcher"
+                        app:actionLayout="@layout/action_view_checkbox"
+                        android:title="@string/drawer_menu_logging_app" />
+                    <item
+                        android:id="@+id/nav_logging_canary"
+                        android:icon="@drawable/leak_canary_icon"
+                        app:actionLayout="@layout/action_view_checkbox"
+                        android:title="@string/drawer_menu_logging_leakcanary" />
+                    <item
+                        android:id="@+id/nav_logging_picasso"
+                        android:icon="@drawable/leak_canary_icon"
+                        app:actionLayout="@layout/action_view_checkbox"
+                        android:title="@string/drawer_menu_logging_picasso" />
+                </group>
+            </menu>
+            </item>
     </group>
 </menu>
