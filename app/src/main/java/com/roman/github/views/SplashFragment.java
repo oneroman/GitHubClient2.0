@@ -1,6 +1,7 @@
 package com.roman.github.views;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.roman.github.R;
 import com.roman.github.base.BaseFragment;
 import com.roman.github.modules.SplashModule;
@@ -39,6 +41,9 @@ public class SplashFragment extends BaseFragment implements Splash.View {
 
     @BindView(R.id.vDotsView)
     DotsView dotsView;
+
+    @BindView(R.id.shimmer_view_container)
+    ShimmerFrameLayout shimmerContainer;
 
     private ObjectAnimator dotsAnimator;
     private final static int MAX_INJECTION_DURATION = 1000;
@@ -134,5 +139,20 @@ public class SplashFragment extends BaseFragment implements Splash.View {
         }
         dotsAnimator.cancel();
         dotsAnimator.start();
+    }
+
+    @Override
+    public void onResume() {
+        Logger.d(TAG, "onResume");
+        super.onResume();
+        shimmerContainer.setRepeatMode(ValueAnimator.REVERSE);
+        shimmerContainer.startShimmerAnimation();
+    }
+
+    @Override
+    public void onPause() {
+        Logger.d(TAG, "onPause");
+        super.onPause();
+        shimmerContainer.stopShimmerAnimation();
     }
 }

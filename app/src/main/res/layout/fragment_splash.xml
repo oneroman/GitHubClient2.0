@@ -5,6 +5,20 @@
     android:layout_height="match_parent"
     tools:context=".activity.LaunchActivity">
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Loading..."
+            android:textColor="@android:color/black"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <com.roman.github.views.splash.DotsView
         android:id="@+id/vDotsView"
         android:layout_width="350dp"
