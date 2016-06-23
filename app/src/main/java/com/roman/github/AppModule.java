@@ -2,6 +2,7 @@ package com.roman.github;
 
 import android.app.Application;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.roman.github.GitHubAPI.GitHubAPI;
 import com.squareup.picasso.Picasso;
@@ -54,6 +55,7 @@ public class AppModule {
         }
 
         addGitHubInterceptor(builder);
+        addStethoInterceptor(builder);
 
         Cache cache = new Cache(app.getCacheDir(), 2 * 1024 * 1024);//2 Mb
         builder.cache(cache);
@@ -77,6 +79,11 @@ public class AppModule {
                 return chain.proceed(request);
             }
         });
+    }
+
+
+    private void addStethoInterceptor(OkHttpClient.Builder builder) {
+        builder.addInterceptor(new StethoInterceptor());
     }
 
     @Provides

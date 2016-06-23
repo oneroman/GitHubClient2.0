@@ -3,6 +3,7 @@ package com.roman.github;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.stetho.Stetho;
 import com.roman.github.leakcanary.DisableLogger;
 import com.roman.github.leakcanary.EnableLogger;
 import com.roman.github.modules.SettingsModule;
@@ -27,6 +28,7 @@ public class MyApplication extends Application {
 
         fixCanaryLeaks();
 
+        setupStetho();
         setupLeak();
         setupAppComponent();
     }
@@ -37,6 +39,10 @@ public class MyApplication extends Application {
 
     public static Context getAppContext() {
         return app;
+    }
+
+    private void setupStetho() {
+        Stetho.initializeWithDefaults(this);
     }
 
     private void setupLeak() {
