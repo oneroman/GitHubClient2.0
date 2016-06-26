@@ -28,6 +28,7 @@ public class MyApplication extends Application {
 
         fixCanaryLeaks();
 
+        setupTinyDancer();
         setupStetho();
         setupLeak();
         setupAppComponent();
@@ -39,6 +40,10 @@ public class MyApplication extends Application {
 
     public static Context getAppContext() {
         return app;
+    }
+
+    private void setupTinyDancer() {
+//        com.codemonkeylabs.fpslibrary.TinyDancer.create().show(this);
     }
 
     private void setupStetho() {
